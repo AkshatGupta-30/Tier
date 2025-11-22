@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Tier",
+  "version": "1.0.0",
+  "description": "Tier",
+  "permissions": ["activeTab", "storage"],
+  "icons": {
+    "16": "images/tier-16.png",
+    "48": "images/tier-48.png",
+    "128": "images/tier-128.png",
+    "256": "images/tier-256.png",
+    "512": "images/tier.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
