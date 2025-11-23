@@ -1,7 +1,7 @@
-import { type FC } from 'react';
+import { type CSSProperties, type FC } from 'react';
 
 interface TierLogoProps {
-  size?: number;
+  size?: CSSProperties['width'];
   className?: string;
 }
 
@@ -12,7 +12,8 @@ const TierLogo: FC<TierLogoProps> = ({ size = 480, className = '' }) => {
   return (
     <div className="flex flex-col items-center gap-4">
       <div
-        className={`relative aspect-square w-[${size}px] rounded-[10%] bg-[radial-gradient(circle_at_top_left,#2a4ab6,#872da6_125%,#6a1d8a)] p-[10%] ${className}`}
+        className={`relative aspect-square rounded-[10%] bg-[radial-gradient(circle_at_top_left,#2a4ab6,#872da6_125%,#6a1d8a)] p-[10%] ${className}`}
+        style={{ width: size, height: size }}
         aria-label="Tier Logo"
         role="img"
       >

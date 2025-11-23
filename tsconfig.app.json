@@ -27,6 +27,7 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@config/*": ["src/config/*"],
+      "@constants": ["src/constants"],
       "@constants/*": ["src/constants/*"],
       "@navigation/*": ["src/navigation/*"],
       "@network/*": ["src/network/*"],
@@ -35,6 +36,7 @@
       "@store/*": ["src/store/*"],
       "@styles/*": ["src/styles/*"],
       "@ts/*": ["src/ts/*"],
+      "@utils": ["src/utils"],
       "@utils/*": ["src/utils/*"]
     }
   },
