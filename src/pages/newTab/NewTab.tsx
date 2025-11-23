@@ -4,11 +4,10 @@ import BookmarkSection from '@components/BookmarkSection';
 import BreadCrumb from '@components/BreadCrumb';
 import TierLogo from '@components/Logo';
 import { APP_NAME } from '@constants';
-import { useAppSelector } from '@store';
-import { selectCurrentFolder } from '@store/slices/bookmark';
+import useBookmarks from '@hooks/useBookmarks';
 
 const NewTab = () => {
-  const bookmarks = useAppSelector(selectCurrentFolder);
+  const { bookmarks } = useBookmarks();
 
   return (
     <div className="min-h-screen w-full bg-linear-to-br from-gray-900 via-gray-800 to-black flex flex-col relative overflow-hidden">

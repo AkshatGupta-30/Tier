@@ -1,8 +1,7 @@
 import type { FC } from 'react';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 
-import { useAppDispatch, useAppSelector } from '@store';
-import { bookmarkState, removeBreadcrumbNode } from '@store/slices/bookmark';
+import useBookmarks from '@hooks/useBookmarks';
 import type { IBreadcrumbNode } from '@ts/bookmark';
 import { truncateText } from '@utils';
 
@@ -12,7 +11,7 @@ interface NodeProps extends IBreadcrumbNode {
 }
 
 const Node: FC<NodeProps> = ({ id, title, isLast }) => {
-  const dispatch = useAppDispatch();
+  const { removeBreadcrumb } = useBookmarks();
 
   return (
     <>
@@ -21,7 +20,7 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
           isLast ? 'font-medium pointer-events-none' : ''
         }`}
         role="button"
-        onClick={() => dispatch(removeBreadcrumbNode(id))}
+        onClick={() => removeBreadcrumb(id)}
       >
         {truncateText(title)}
       </p>
@@ -31,7 +30,7 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
 };
 
 const BreadCrumb = () => {
-  const { breadcrumbs } = useAppSelector(bookmarkState);
+  const { breadcrumbs } = useBookmarks();
 
   return (
     <div className="flex flex-row w-full items-center justify-center">

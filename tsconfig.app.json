@@ -29,6 +29,7 @@
       "@config/*": ["src/config/*"],
       "@constants": ["src/constants"],
       "@constants/*": ["src/constants/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@navigation/*": ["src/navigation/*"],
       "@network/*": ["src/network/*"],
       "@pages/*": ["src/pages/*"],
