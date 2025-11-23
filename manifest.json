@@ -3,7 +3,7 @@
   "name": "Tier",
   "version": "1.0.0",
   "description": "Tier",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["bookmarks", "storage"],
   "icons": {
     "16": "images/tier-16.png",
     "48": "images/tier-48.png",
