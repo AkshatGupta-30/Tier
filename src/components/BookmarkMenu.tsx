@@ -1,0 +1,183 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+import { Activity, useEffect, useMemo, useRef, useState } from 'react';
+
+import { LABELS } from '@constants/label';
+import { hideScrollbar } from '@constants/style';
+import useBookmarkContextMenu from '@hooks/useBookmarkContextMenu';
+import { ContextMenuPosition } from '@ts/bookmark';
+
+const { OPEN_BOOKMARK, RENAME, CUT, COPY, PASTE, DELETE, ADD_FOLDER, ADD_PAGE } = LABELS;
+
+const BookmarkMenu = () => {
+  const {
+    visible,
+    coordinates,
+    bookmark,
+    hideContextMenu,
+    openBookmark,
+    cutBookmark,
+    copyBookmark,
+    pasteBookmark,
+    deleteBookmark,
+  } = useBookmarkContextMenu();
+
+  const [position, setPosition] = useState<ContextMenuPosition>(ContextMenuPosition.TOP_LEFT);
+  const [maxHeight, setMaxHeight] = useState<number>();
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  const isFolder = bookmark && Object.hasOwn(bookmark, 'children');
+
+  const CONTEXT_MENU_ITEMS = [
+    {
+      label: OPEN_BOOKMARK,
+      onClick: () => openBookmark(),
+    },
+    { type: 'separator' },
+    {
+      label: RENAME,
+      onClick: () => {},
+    },
+    { type: 'separator' },
+    {
+      label: CUT,
+      onClick: cutBookmark,
+    },
+    {
+      label: COPY,
+      onClick: copyBookmark,
+    },
+    {
+      label: PASTE,
+      className: !bookmark ? 'opacity-50' : '',
+      disabled: !bookmark,
+      onClick: () => {
+        if (bookmark) pasteBookmark(bookmark?.parentId);
+      },
+    },
+    { type: 'separator' },
+    {
+      label: DELETE,
+      onClick: deleteBookmark,
+    },
+    ...(isFolder
+      ? [
+          { type: 'separator' },
+          {
+            label: ADD_PAGE,
+            onClick: () => {},
+          },
+          {
+            label: ADD_FOLDER,
+            onClick: () => {},
+          },
+        ]
+      : []),
+  ];
+
+  const [translateX, translateY] = useMemo(() => {
+    switch (position) {
+      case ContextMenuPosition.TOP_LEFT:
+        return [0, 0];
+      case ContextMenuPosition.TOP_RIGHT:
+        return ['-100%', 0];
+      case ContextMenuPosition.BOTTOM_LEFT:
+        return [0, '-100%'];
+      case ContextMenuPosition.BOTTOM_RIGHT:
+        return ['-100%', '-100%'];
+    }
+  }, [position]);
+
+  const handleClose = () => {
+    hideContextMenu();
+    setPosition(ContextMenuPosition.TOP_LEFT);
+  };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (ref.current && !ref.current.contains(e.target as Node)) handleClose();
+  };
+
+  useEffect(() => {
+    if (visible) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible || !ref.current) return;
+
+    const { x, y } = coordinates;
+    const { offsetWidth, offsetHeight } = ref.current;
+    const { innerWidth, innerHeight } = window;
+
+    const spaceBelow = innerHeight - y;
+    const spaceAbove = y;
+    const spaceRight = innerWidth - x;
+    const spaceLeft = x;
+
+    const useBottom = offsetHeight > spaceBelow && spaceAbove > spaceBelow;
+    const useRight = offsetWidth > spaceRight && spaceLeft > spaceRight;
+
+    if (useBottom && useRight) {
+      setPosition(ContextMenuPosition.BOTTOM_RIGHT);
+    } else if (useBottom) {
+      setPosition(ContextMenuPosition.BOTTOM_LEFT);
+    } else if (useRight) {
+      setPosition(ContextMenuPosition.TOP_RIGHT);
+    } else {
+      setPosition(ContextMenuPosition.TOP_LEFT);
+    }
+
+    const PADDING = 10;
+    const calculatedMaxHeight = useBottom ? spaceAbove - PADDING : spaceBelow - PADDING;
+    setMaxHeight(calculatedMaxHeight);
+  }, [coordinates, visible]);
+
+  return (
+    <Activity mode={visible ? 'visible' : 'hidden'}>
+      <div
+        ref={ref}
+        className={`fixed p-1.5 bg-black rounded-lg min-w-48 overflow-scroll ${hideScrollbar}`}
+        style={{
+          top: coordinates.y,
+          left: coordinates.x,
+          transform: `translateX(${translateX}) translateY(${translateY})`,
+          maxHeight,
+        }}
+      >
+        {CONTEXT_MENU_ITEMS.map(({ label, onClick, className, disabled, type }, index) => {
+          if (type === 'separator') {
+            return (
+              <div
+                key={index}
+                className="h-px w-full my-1 bg-white/20"
+              />
+            );
+          }
+
+          return (
+            <button
+              key={index}
+              onClick={() => {
+                onClick?.();
+                handleClose();
+              }}
+              className={`w-full p-2 text-white hover:bg-white/20 cursor-pointer text-left text-md rounded-sm ${className}`}
+              disabled={disabled}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </Activity>
+  );
+};
+
+export default BookmarkMenu;

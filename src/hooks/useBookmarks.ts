@@ -5,6 +5,12 @@ import {
   removeBreadcrumbNode,
   selectCurrentFolder,
   setBookmarks,
+  addBookmark as appendBookmark,
+  removeBookmark as deleteBookmark,
+  updateBookmark as editBookmark,
+  addFolder as appendFolder,
+  removeFolder as deleteFolder,
+  updateFolder as editFolder,
 } from '@store/slices/bookmark';
 import type { IBookmark, IBookmarkFolder, IBreadcrumbNode } from '@ts/bookmark';
 
@@ -20,19 +26,38 @@ const useBookmarks = () => {
   };
 
   const addBookmark = async ({ parentId, title, url }: Omit<IBookmark, 'id'>) => {
-    chrome.bookmarks.create({ title, url, parentId });
+    const bookmark = await chrome.bookmarks.create({ title, url, parentId });
+    dispatch(appendBookmark(bookmark as IBookmark));
   };
 
-  const removeBookmark = async (id: string) => {
+  const removeBookmark = (id: string) => {
     chrome.bookmarks.remove(id);
+    dispatch(deleteBookmark(id));
   };
 
-  const updateBookmark = async ({ id, title, url }: IBookmark) => {
+  const updateBookmark = ({ id, title, url }: IBookmark) => {
+    dispatch(editBookmark({ id, title, url }));
     chrome.bookmarks.update(id, { title, url });
   };
 
-  const addBreadcrumb = async (bookmark: IBreadcrumbNode) => dispatch(addBreadcrumbNode(bookmark));
-  const removeBreadcrumb = async (id: string) => dispatch(removeBreadcrumbNode(id));
+  const addFolder = async ({ parentId, title }: Omit<IBookmarkFolder, 'id'>) => {
+    const folder = await chrome.bookmarks.create({ title, parentId });
+    dispatch(appendFolder(folder as IBookmarkFolder));
+  };
+
+  const removeFolder = (id: string) => {
+    chrome.bookmarks.remove(id);
+    dispatch(deleteFolder(id));
+  };
+
+  const updateFolder = ({ id, title }: { id: string; title: string }) => {
+    dispatch(editFolder({ id, title }));
+    chrome.bookmarks.update(id, { title });
+  };
+
+  const addBreadcrumb = (bookmark: IBreadcrumbNode) => dispatch(addBreadcrumbNode(bookmark));
+
+  const removeBreadcrumb = (id: string) => dispatch(removeBreadcrumbNode(id));
 
   return {
     bookmarks,
@@ -41,6 +66,9 @@ const useBookmarks = () => {
     addBookmark,
     removeBookmark,
     updateBookmark,
+    addFolder,
+    removeFolder,
+    updateFolder,
     addBreadcrumb,
     removeBreadcrumb,
   };

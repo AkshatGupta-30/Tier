@@ -15,3 +15,10 @@ export interface IBookmarkFolder {
 export type IBreadcrumbNode = Omit<IBookmarkFolder, 'children'>;
 
 export type IBookmarkItem = IBookmark | IBookmarkFolder;
+
+export enum ContextMenuPosition {
+  TOP_LEFT = 'top-left',
+  TOP_RIGHT = 'top-right',
+  BOTTOM_LEFT = 'bottom-left',
+  BOTTOM_RIGHT = 'bottom-right',
+}

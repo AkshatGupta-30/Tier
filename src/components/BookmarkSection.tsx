@@ -4,6 +4,7 @@ import type { IBookmark, IBookmarkFolder, IBookmarkItem } from '@ts/bookmark';
 
 import Bookmark from './Bookmark';
 import BookmarkFolder from './BookmarkFolder';
+import BookmarkMenu from './BookmarkMenu';
 
 interface BookmarkSectionProps {
   bookmarks: IBookmarkItem[];
@@ -30,6 +31,7 @@ const BookmarkSection: FC<BookmarkSectionProps> = ({ bookmarks }) => {
           />
         );
       })}
+      <BookmarkMenu />
     </div>
   );
 };

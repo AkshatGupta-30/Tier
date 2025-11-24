@@ -2,20 +2,30 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import type { IBookmark, IBookmarkFolder, IBookmarkItem, IBreadcrumbNode } from '@ts/bookmark';
 
-const initialBookmark = {
+const initialBookmark: IBookmarkFolder = {
   id: '1',
   title: 'Bookmark Bar',
   children: [],
+  parentId: '',
 };
 
 interface State {
   breadcrumbs: IBreadcrumbNode[];
   bookmarks: IBookmarkFolder;
+  contextMenu: {
+    visible: boolean;
+    coordinates: { x: number; y: number };
+    bookmark?: IBookmarkItem;
+  };
 }
 
 const initialState: State = {
   breadcrumbs: [initialBookmark],
   bookmarks: initialBookmark,
+  contextMenu: {
+    visible: false,
+    coordinates: { x: 0, y: 0 },
+  },
 };
 
 const findFolder = (items: IBookmarkItem[], id: string): IBookmarkFolder | undefined => {
@@ -73,7 +83,7 @@ const bookmarkSlice = createSlice({
         state.bookmarks.children.push(payload);
       }
     },
-    removeBookmark: (state, { payload }: { payload: IBookmark }) => {
+    removeBookmark: (state, { payload }: { payload: string }) => {
       if (state.breadcrumbs.length > 0) {
         const folder = findFolder(
           state.bookmarks.children,
@@ -81,17 +91,13 @@ const bookmarkSlice = createSlice({
         );
         if (folder) {
           const bookmarkFolder = folder as IBookmarkFolder;
-          bookmarkFolder.children = bookmarkFolder.children.filter(
-            (item) => item.id !== payload.id,
-          );
+          bookmarkFolder.children = bookmarkFolder.children.filter(({ id }) => id !== payload);
         }
       } else {
-        state.bookmarks.children = state.bookmarks.children.filter(
-          (bookmark) => bookmark.id !== payload.id,
-        );
+        state.bookmarks.children = state.bookmarks.children.filter(({ id }) => id !== payload);
       }
     },
-    removeFolder: (state, { payload }: { payload: IBookmarkFolder }) => {
+    removeFolder: (state, { payload }: { payload: string }) => {
       if (state.breadcrumbs.length > 0) {
         const folder = findFolder(
           state.bookmarks.children,
@@ -99,15 +105,63 @@ const bookmarkSlice = createSlice({
         );
         if (folder) {
           const bookmarkFolder = folder as IBookmarkFolder;
-          bookmarkFolder.children = bookmarkFolder.children.filter(
-            (item) => item.id !== payload.id,
-          );
+          bookmarkFolder.children = bookmarkFolder.children.filter(({ id }) => id !== payload);
         }
       } else {
-        state.bookmarks.children = state.bookmarks.children.filter(
-          (folder) => folder.id !== payload.id,
-        );
+        state.bookmarks.children = state.bookmarks.children.filter(({ id }) => id !== payload);
       }
+    },
+    updateBookmark: (
+      state,
+      { payload }: { payload: { id: string; title: string; url: string } },
+    ) => {
+      if (state.breadcrumbs.length > 0) {
+        const folder = findFolder(
+          state.bookmarks.children,
+          state.breadcrumbs[state.breadcrumbs.length - 1].id,
+        );
+        if (folder) {
+          const bookmark = folder.children.find((item) => item.id === payload.id);
+          if (bookmark) {
+            bookmark.title = payload.title;
+            (bookmark as IBookmark).url = payload.url;
+          }
+        }
+      } else {
+        const bookmark = state.bookmarks.children.find((item) => item.id === payload.id);
+        if (bookmark) {
+          bookmark.title = payload.title;
+          (bookmark as IBookmark).url = payload.url;
+        }
+      }
+    },
+    updateFolder: (state, { payload }: { payload: { id: string; title: string } }) => {
+      if (state.breadcrumbs.length > 0) {
+        const folder = findFolder(
+          state.bookmarks.children,
+          state.breadcrumbs[state.breadcrumbs.length - 1].id,
+        );
+        if (folder) {
+          const childFolder = folder.children.find((item) => item.id === payload.id);
+          if (childFolder) {
+            childFolder.title = payload.title;
+          }
+        }
+      } else {
+        const childFolder = state.bookmarks.children.find((item) => item.id === payload.id);
+        if (childFolder) {
+          childFolder.title = payload.title;
+        }
+      }
+    },
+    showContextMenu: (
+      state,
+      { payload }: { payload: { coordinates: { x: number; y: number }; bookmark: IBookmarkItem } },
+    ) => {
+      state.contextMenu = { ...payload, visible: true };
+    },
+    hideContextMenu: (state) => {
+      state.contextMenu = initialState.contextMenu;
     },
   },
 });
@@ -117,9 +171,13 @@ export const {
   addFolder,
   removeBookmark,
   removeFolder,
+  updateBookmark,
+  updateFolder,
   setBookmarks,
   addBreadcrumbNode,
   removeBreadcrumbNode,
+  showContextMenu,
+  hideContextMenu,
 } = bookmarkSlice.actions;
 
 export const bookmarkState = (state: { bookmark: State }) => state.bookmark;
