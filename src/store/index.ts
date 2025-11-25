@@ -2,10 +2,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import bookmarkReducer from './slices/bookmark';
+import modalReducer from './slices/modals';
 
 const store = configureStore({
   reducer: {
     bookmark: bookmarkReducer,
+    modal: modalReducer,
   },
 });
 
