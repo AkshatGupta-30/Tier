@@ -19,7 +19,7 @@ const Modal = () => {
       <div className={`fixed inset-0 z-50 ${className?.modal}`}>
         <button className="fixed inset-0 bg-black/50 z-0" />
         <div className="relative z-1 w-full h-full flex items-center justify-center p-20">
-          {Component ? <Component {...childrenProps!} /> : null}
+          {Component && <Component {...childrenProps!} />}
         </div>
       </div>
     </Activity>,

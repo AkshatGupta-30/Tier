@@ -9,7 +9,7 @@ interface TierLogoProps {
 const TierLogo: FC<TierLogoProps> = ({ size = 480, className = '' }) => {
   return (
     <img
-      src="/public/images/tier.png"
+      src="/images/tier.png"
       alt="Tier Logo"
       width={size}
       height={size}

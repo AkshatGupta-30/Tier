@@ -18,7 +18,7 @@ import type { IBookmark, IBookmarkFolder, IBreadcrumbNode } from '@ts/bookmark';
 
 const useBookmarks = () => {
   const dispatch = useAppDispatch();
-  const bookmarks = useAppSelector(selectCurrentFolder);
+  const { children: bookmarks = [] } = useAppSelector(selectCurrentFolder) || {};
   const { breadcrumbs } = useAppSelector(bookmarkState);
 
   const fetchBookmarks = async () => {

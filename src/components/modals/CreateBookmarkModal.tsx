@@ -19,7 +19,7 @@ const {
   BOOKMARK,
 } = LABELS;
 
-const CreateBookmarkModal = ({ bookmark, parentId }: CreateBookmarkModalProps) => {
+const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmarkModalProps) => {
   const {
     id: bookmarkId,
     title: bookmarkTitle = '',
@@ -29,7 +29,9 @@ const CreateBookmarkModal = ({ bookmark, parentId }: CreateBookmarkModalProps) =
 
   const { addBookmark, addFolder, updateBookmark, updateFolder } = useBookmarks();
 
-  const [type, setType] = useState<'bookmark' | 'folder'>('bookmark');
+  const [type, setType] = useState<'bookmark' | 'folder'>(() =>
+    createFolder ? 'folder' : 'bookmark',
+  );
   const [title, setTitle] = useState(bookmarkTitle || '');
   const [url, setUrl] = useState(bookmarkUrl || '');
 
@@ -81,7 +83,7 @@ const CreateBookmarkModal = ({ bookmark, parentId }: CreateBookmarkModalProps) =
   };
 
   return (
-    <section className="max-w-[80%] max-h-[80%] bg-gray-800 rounded-lg flex flex-col justify-start overflow-hidden border border-gray-700">
+    <section className="max-w-[90%] max-h-[90%] bg-gray-800 rounded-lg flex flex-col justify-start overflow-hidden border border-gray-700">
       <header className="flex items-center justify-between bg-gray-900 px-6 py-4">
         <p className="text-xl font-semibold text-white">{modalTitle()}</p>
         <IoMdClose

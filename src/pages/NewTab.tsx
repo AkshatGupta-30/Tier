@@ -1,12 +1,17 @@
 import BookmarkSection from '@components/BookmarkSection';
 import useBookmarks from '@hooks/useBookmarks';
 import Header from '@components/Header';
+import useBookmarkContextMenu from '@hooks/useBookmarkContextMenu';
 
 const NewTab = () => {
   const { bookmarks } = useBookmarks();
+  const { handleEmptySpaceContextMenu } = useBookmarkContextMenu();
 
   return (
-    <div className="min-h-screen w-full bg-linear-to-br from-gray-900 via-gray-800 to-black flex flex-col relative overflow-hidden">
+    <div
+      className="min-h-screen w-full bg-linear-to-br from-gray-900 via-gray-800 to-black flex flex-col relative overflow-hidden"
+      onContextMenu={handleEmptySpaceContextMenu}
+    >
       {/* Background Effects */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />

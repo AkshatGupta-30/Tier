@@ -22,3 +22,11 @@ export enum ContextMenuPosition {
   BOTTOM_LEFT = 'bottom-left',
   BOTTOM_RIGHT = 'bottom-right',
 }
+
+export interface ContextMenuItemType {
+  label?: string;
+  onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+  type?: 'separator';
+}

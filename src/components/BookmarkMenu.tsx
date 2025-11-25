@@ -1,20 +1,21 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { Activity, useEffect, useMemo, useRef, useState } from 'react';
 
 import { LABELS } from '@constants/label';
+import { MODAL_TYPES } from '@constants/modals';
 import { hideScrollbar } from '@constants/style';
 import useBookmarkContextMenu from '@hooks/useBookmarkContextMenu';
-import { ContextMenuPosition } from '@ts/bookmark';
-import Modal from './modals';
-import { MODAL_TYPES } from '@constants/modals';
+import { ContextMenuPosition, type ContextMenuItemType } from '@ts/bookmark';
 
-const { OPEN_BOOKMARK, RENAME, CUT, COPY, PASTE, DELETE, ADD_FOLDER, ADD_PAGE } = LABELS;
+import Modal from './modals';
+
+const { OPEN_BOOKMARK, RENAME, CUT, COPY, PASTE, DELETE, NEW_BOOKMARK, NEW_FOLDER } = LABELS;
 
 const BookmarkMenu = () => {
   const {
     visible,
     coordinates,
     bookmark,
+    isEmptySpace,
     hideContextMenu,
     openBookmark,
     cutBookmark,
@@ -30,7 +31,30 @@ const BookmarkMenu = () => {
 
   const isFolder = bookmark && Object.hasOwn(bookmark, 'children');
 
-  const CONTEXT_MENU_ITEMS = [
+  const EMPTY_SPACE_CONTEXT_MENU_ITEMS: ContextMenuItemType[] = [
+    {
+      label: NEW_BOOKMARK,
+      onClick: () => {
+        console.log('Bookmark: ', bookmark);
+        Modal.open({
+          openModalType: MODAL_TYPES.CREATE_BOOKMARK,
+          childrenProps: { parentId: bookmark!.id! },
+        });
+      },
+    },
+    {
+      label: NEW_FOLDER,
+      onClick: () => {
+        console.log('Bookmark: ', bookmark);
+        Modal.open({
+          openModalType: MODAL_TYPES.CREATE_BOOKMARK,
+          childrenProps: { parentId: bookmark!.id!, createFolder: true },
+        });
+      },
+    },
+  ];
+
+  const BOOKMARK_CONTEXT_MENU_ITEMS: ContextMenuItemType[] = [
     {
       label: OPEN_BOOKMARK,
       onClick: () => openBookmark(),
@@ -68,19 +92,33 @@ const BookmarkMenu = () => {
       onClick: deleteBookmark,
     },
     ...(isFolder
-      ? [
+      ? ([
           { type: 'separator' },
           {
-            label: ADD_PAGE,
-            onClick: () => {},
+            label: NEW_BOOKMARK,
+            onClick: () => {
+              console.log('Bookmark: ', bookmark);
+              Modal.open({
+                openModalType: MODAL_TYPES.CREATE_BOOKMARK,
+                childrenProps: { parentId: bookmark!.parentId! },
+              });
+            },
           },
           {
-            label: ADD_FOLDER,
-            onClick: () => {},
+            label: NEW_FOLDER,
+            onClick: () => {
+              console.log('Bookmark: ', bookmark);
+              Modal.open({
+                openModalType: MODAL_TYPES.CREATE_BOOKMARK,
+                childrenProps: { parentId: bookmark!.id!, createFolder: true },
+              });
+            },
           },
-        ]
+        ] as ContextMenuItemType[])
       : []),
   ];
+
+  const MENU_ITEMS = isEmptySpace ? EMPTY_SPACE_CONTEXT_MENU_ITEMS : BOOKMARK_CONTEXT_MENU_ITEMS;
 
   const [translateX, translateY] = useMemo(() => {
     switch (position) {
@@ -158,7 +196,7 @@ const BookmarkMenu = () => {
           maxHeight,
         }}
       >
-        {CONTEXT_MENU_ITEMS.map(({ label, onClick, className, disabled, type }, index) => {
+        {MENU_ITEMS.map(({ label, onClick, className, disabled, type }, index) => {
           if (type === 'separator') {
             return (
               <div

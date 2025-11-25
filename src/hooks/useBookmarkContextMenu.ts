@@ -1,10 +1,11 @@
 import { useState, type MouseEvent } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@store';
+import store, { useAppDispatch, useAppSelector } from '@store';
 import {
   bookmarkState,
   showContextMenu,
   hideContextMenu as removeContextMenu,
+  selectCurrentFolder,
 } from '@store/slices/bookmark';
 import type { IBookmark, IBookmarkFolder, IBookmarkItem } from '@ts/bookmark';
 
@@ -13,7 +14,7 @@ import useBookmarks from './useBookmarks';
 const useBookmarkContextMenu = () => {
   const dispatch = useAppDispatch();
   const { contextMenu } = useAppSelector(bookmarkState);
-  const { visible, coordinates, bookmark } = contextMenu;
+  const { bookmark } = contextMenu;
 
   const {
     addBreadcrumb,
@@ -30,12 +31,29 @@ const useBookmarkContextMenu = () => {
   const isFolder = bookmark && Object.hasOwn(bookmark, 'children');
 
   const handleContextMenu = (e: MouseEvent, bookmark: IBookmarkItem) => {
+    e.stopPropagation();
     e.preventDefault();
     const { pageX: x, pageY: y } = e;
     dispatch(
       showContextMenu({
         coordinates: { x, y },
         bookmark,
+      }),
+    );
+  };
+
+  const handleEmptySpaceContextMenu = (e: MouseEvent) => {
+    e.preventDefault();
+    const { pageX: x, pageY: y } = e;
+
+    const state = store.getState();
+    const currentFolder = selectCurrentFolder(state);
+
+    dispatch(
+      showContextMenu({
+        coordinates: { x, y },
+        bookmark: currentFolder!,
+        isEmptySpace: true,
       }),
     );
   };
@@ -85,10 +103,9 @@ const useBookmarkContextMenu = () => {
   };
 
   return {
-    visible,
-    coordinates,
-    bookmark,
+    ...contextMenu,
     handleContextMenu,
+    handleEmptySpaceContextMenu,
     hideContextMenu,
     openBookmark,
     renameBookmark,

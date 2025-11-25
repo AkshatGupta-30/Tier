@@ -16,6 +16,7 @@ interface State {
     visible: boolean;
     coordinates: { x: number; y: number };
     bookmark?: IBookmarkItem;
+    isEmptySpace?: boolean;
   };
 }
 
@@ -165,7 +166,11 @@ const bookmarkSlice = createSlice({
       state,
       {
         payload,
-      }: PayloadAction<{ coordinates: { x: number; y: number }; bookmark: IBookmarkItem }>,
+      }: PayloadAction<{
+        coordinates: { x: number; y: number };
+        bookmark: IBookmarkItem;
+        isEmptySpace?: boolean;
+      }>,
     ) => {
       state.contextMenu = { ...payload, visible: true };
     },
@@ -195,12 +200,12 @@ export const bookmarkState = (state: { bookmark: State }) => state.bookmark;
 
 export const selectCurrentFolder = createSelector([bookmarkState], (state) => {
   const { bookmarks, breadcrumbs } = state;
-  if (breadcrumbs.length === 0) return bookmarks.children;
+  if (breadcrumbs.length === 0) return bookmarks;
 
   const currentFolderId = breadcrumbs[breadcrumbs.length - 1].id;
   const folder = findFolder([bookmarks], currentFolderId);
 
-  return folder?.children ?? [];
+  return folder;
 });
 
 export default bookmarkSlice.reducer;
