@@ -4,7 +4,7 @@ import { LABELS } from '@constants/label';
 import { MODAL_TYPES } from '@constants/modals';
 import { hideScrollbar } from '@constants/style';
 import useBookmarkContextMenu from '@hooks/useBookmarkContextMenu';
-import { ContextMenuPosition, type ContextMenuItemType } from '@ts/bookmark';
+import { ContextMenuPositionEnum, type ContextMenuItemType } from '@ts/bookmark';
 
 import Modal from './modals';
 
@@ -24,7 +24,9 @@ const BookmarkMenu = () => {
     deleteBookmark,
   } = useBookmarkContextMenu();
 
-  const [position, setPosition] = useState<ContextMenuPosition>(ContextMenuPosition.TOP_LEFT);
+  const [position, setPosition] = useState<ContextMenuPositionEnum>(
+    ContextMenuPositionEnum.TOP_LEFT,
+  );
   const [maxHeight, setMaxHeight] = useState<number>();
 
   const ref = useRef<HTMLDivElement>(null);
@@ -122,20 +124,20 @@ const BookmarkMenu = () => {
 
   const [translateX, translateY] = useMemo(() => {
     switch (position) {
-      case ContextMenuPosition.TOP_LEFT:
+      case ContextMenuPositionEnum.TOP_LEFT:
         return [0, 0];
-      case ContextMenuPosition.TOP_RIGHT:
+      case ContextMenuPositionEnum.TOP_RIGHT:
         return ['-100%', 0];
-      case ContextMenuPosition.BOTTOM_LEFT:
+      case ContextMenuPositionEnum.BOTTOM_LEFT:
         return [0, '-100%'];
-      case ContextMenuPosition.BOTTOM_RIGHT:
+      case ContextMenuPositionEnum.BOTTOM_RIGHT:
         return ['-100%', '-100%'];
     }
   }, [position]);
 
   const handleClose = () => {
     hideContextMenu();
-    setPosition(ContextMenuPosition.TOP_LEFT);
+    setPosition(ContextMenuPositionEnum.TOP_LEFT);
   };
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -170,13 +172,13 @@ const BookmarkMenu = () => {
     const useRight = offsetWidth > spaceRight && spaceLeft > spaceRight;
 
     if (useBottom && useRight) {
-      setPosition(ContextMenuPosition.BOTTOM_RIGHT);
+      setPosition(ContextMenuPositionEnum.BOTTOM_RIGHT);
     } else if (useBottom) {
-      setPosition(ContextMenuPosition.BOTTOM_LEFT);
+      setPosition(ContextMenuPositionEnum.BOTTOM_LEFT);
     } else if (useRight) {
-      setPosition(ContextMenuPosition.TOP_RIGHT);
+      setPosition(ContextMenuPositionEnum.TOP_RIGHT);
     } else {
-      setPosition(ContextMenuPosition.TOP_LEFT);
+      setPosition(ContextMenuPositionEnum.TOP_LEFT);
     }
 
     const PADDING = 10;
