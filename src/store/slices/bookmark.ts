@@ -6,7 +6,7 @@ const initialBookmark: IBookmarkFolder = {
   id: '1',
   title: 'Bookmark Bar',
   children: [],
-  parentId: '',
+  parentId: '0',
 };
 
 interface State {
@@ -48,6 +48,9 @@ const bookmarkSlice = createSlice({
       state.bookmarks = payload;
       state.breadcrumbs = [{ ...initialBookmark, id: state.bookmarks.id }];
     },
+    createFreshBreadcrumb: (state, { payload }: { payload: IBreadcrumbNode }) => {
+      state.breadcrumbs = [payload];
+    },
     addBreadcrumbNode: (state, { payload }: { payload: IBreadcrumbNode }) => {
       state.breadcrumbs.push(payload);
     },
@@ -56,6 +59,9 @@ const bookmarkSlice = createSlice({
       if (index > -1) {
         state.breadcrumbs = state.breadcrumbs.slice(0, index + 1);
       }
+    },
+    clearBreadcrumb: (state) => {
+      state.breadcrumbs = [initialBookmark];
     },
     addBookmark: (state, { payload }: { payload: IBookmark }) => {
       if (state.breadcrumbs.length > 0) {
@@ -174,6 +180,8 @@ export const {
   updateBookmark,
   updateFolder,
   setBookmarks,
+  createFreshBreadcrumb,
+  clearBreadcrumb,
   addBreadcrumbNode,
   removeBreadcrumbNode,
   showContextMenu,

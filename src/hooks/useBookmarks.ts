@@ -11,6 +11,8 @@ import {
   addFolder as appendFolder,
   removeFolder as deleteFolder,
   updateFolder as editFolder,
+  createFreshBreadcrumb,
+  clearBreadcrumb,
 } from '@store/slices/bookmark';
 import type { IBookmark, IBookmarkFolder, IBreadcrumbNode } from '@ts/bookmark';
 
@@ -21,6 +23,7 @@ const useBookmarks = () => {
 
   const fetchBookmarks = async () => {
     const bookmarks = await chrome.bookmarks.getTree();
+    console.log(bookmarks);
     const [bookmarkManager] = bookmarks[0].children || [];
     dispatch(setBookmarks(bookmarkManager as IBookmarkFolder));
   };
@@ -55,9 +58,14 @@ const useBookmarks = () => {
     chrome.bookmarks.update(id, { title });
   };
 
+  const createNewBreadcrumb = (bookmark: IBreadcrumbNode) =>
+    dispatch(createFreshBreadcrumb(bookmark));
+
   const addBreadcrumb = (bookmark: IBreadcrumbNode) => dispatch(addBreadcrumbNode(bookmark));
 
   const removeBreadcrumb = (id: string) => dispatch(removeBreadcrumbNode(id));
+
+  const clearAllBreadcrumb = () => dispatch(clearBreadcrumb());
 
   return {
     bookmarks,
@@ -69,8 +77,10 @@ const useBookmarks = () => {
     addFolder,
     removeFolder,
     updateFolder,
+    createNewBreadcrumb,
     addBreadcrumb,
     removeBreadcrumb,
+    clearAllBreadcrumb,
   };
 };
 

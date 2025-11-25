@@ -1,10 +1,6 @@
-import { MdSettings } from 'react-icons/md';
-
 import BookmarkSection from '@components/BookmarkSection';
-import BreadCrumb from '@components/BreadCrumb';
-import TierLogo from '@components/Logo';
-import { APP_NAME } from '@constants';
 import useBookmarks from '@hooks/useBookmarks';
+import Header from '@components/Header';
 
 const NewTab = () => {
   const { bookmarks } = useBookmarks();
@@ -18,17 +14,7 @@ const NewTab = () => {
       </div>
 
       {/* Settings Button */}
-      <header className="w-full h-16 flex items-center justify-between bg-black/50 p-2.5">
-        <div className="flex flex-row w-full items-center gap-4">
-          <TierLogo size={32} />
-          <p className="text-white/90 text-3xl font-bold">{APP_NAME}</p>
-        </div>
-
-        <BreadCrumb />
-        <div className="flex w-full items-center justify-end">
-          <MdSettings className="aspect-square size-8 text-white/90 transform hover:scale-105 hover:text-white cursor-pointer transition-all duration-250 ease-in-out" />
-        </div>
-      </header>
+      <Header />
 
       {/* Content */}
       <main className="z-10 flex flex-col items-center w-full animate-fade-in">
