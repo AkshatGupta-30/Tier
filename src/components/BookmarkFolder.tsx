@@ -4,6 +4,7 @@ import useBookmarks from '@hooks/useBookmarks';
 import useBookmarkContextMenu from '@hooks/useBookmarkContextMenu';
 import type { IBookmarkFolder as BookmarkFolderType } from '@ts/bookmark';
 import { truncateText } from '@utils';
+import { memo } from 'react';
 
 const BookmarkFolder = ({ bookmark }: { bookmark: BookmarkFolderType }) => {
   const { title } = bookmark;
@@ -26,4 +27,4 @@ const BookmarkFolder = ({ bookmark }: { bookmark: BookmarkFolderType }) => {
   );
 };
 
-export default BookmarkFolder;
+export default memo(BookmarkFolder);

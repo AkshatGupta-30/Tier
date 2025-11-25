@@ -18,7 +18,7 @@ const routes = [
 ];
 
 const router = createMemoryRouter(routes, {
-  initialEntries: ['/'], // Start path
+  initialEntries: ['/'],
   initialIndex: 0,
 });
 

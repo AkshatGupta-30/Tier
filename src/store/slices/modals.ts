@@ -1,26 +1,38 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-interface ModalState {
+import type { ModalType } from '@constants/modals';
+import type { ModalPropsMap } from '@ts/modal';
+
+export interface ModalPropsType<T = unknown> {
+  openModalType: ModalType;
+  closeOnOutsideClick?: boolean;
+  childrenProps: T;
+  className?: {
+    modal?: string;
+    overlay?: string;
+  };
+}
+
+interface ModalState<K extends ModalType = ModalType> {
   isOpen: boolean;
-  component: React.ReactNode;
+  modalProps?: ModalPropsType<ModalPropsMap[K]>;
 }
 
 const initialState: ModalState = {
   isOpen: false,
-  component: null,
 };
 
 const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    openModal: (state, { payload }: PayloadAction<React.ReactNode>) => {
+    openModal: (state, { payload }: PayloadAction<ModalPropsType<any>>) => {
       state.isOpen = true;
-      state.component = payload;
+      state.modalProps = payload;
     },
     closeModal: (state) => {
       state.isOpen = false;
-      state.component = null;
+      state.modalProps = undefined;
     },
   },
 });

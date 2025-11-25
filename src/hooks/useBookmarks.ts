@@ -42,7 +42,7 @@ const useBookmarks = () => {
     chrome.bookmarks.update(id, { title, url });
   };
 
-  const addFolder = async ({ parentId, title }: Omit<IBookmarkFolder, 'id'>) => {
+  const addFolder = async ({ parentId, title }: Omit<IBookmarkFolder, 'id' | 'children'>) => {
     const folder = await chrome.bookmarks.create({ title, parentId });
     dispatch(appendFolder(folder as IBookmarkFolder));
   };
@@ -52,7 +52,7 @@ const useBookmarks = () => {
     dispatch(deleteFolder(id));
   };
 
-  const updateFolder = ({ id, title }: { id: string; title: string }) => {
+  const updateFolder = ({ id, title }: Omit<IBookmarkFolder, 'children'>) => {
     dispatch(editFolder({ id, title }));
     chrome.bookmarks.update(id, { title });
   };

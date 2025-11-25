@@ -5,6 +5,8 @@ import { LABELS } from '@constants/label';
 import { hideScrollbar } from '@constants/style';
 import useBookmarkContextMenu from '@hooks/useBookmarkContextMenu';
 import { ContextMenuPosition } from '@ts/bookmark';
+import Modal from './modals';
+import { MODAL_TYPES } from '@constants/modals';
 
 const { OPEN_BOOKMARK, RENAME, CUT, COPY, PASTE, DELETE, ADD_FOLDER, ADD_PAGE } = LABELS;
 
@@ -36,7 +38,12 @@ const BookmarkMenu = () => {
     { type: 'separator' },
     {
       label: RENAME,
-      onClick: () => {},
+      onClick: () => {
+        Modal.open({
+          openModalType: MODAL_TYPES.CREATE_BOOKMARK,
+          childrenProps: { parentId: bookmark!.parentId!, bookmark: bookmark! },
+        });
+      },
     },
     { type: 'separator' },
     {
@@ -52,7 +59,7 @@ const BookmarkMenu = () => {
       className: !bookmark ? 'opacity-50' : '',
       disabled: !bookmark,
       onClick: () => {
-        if (bookmark) pasteBookmark(bookmark?.parentId);
+        if (bookmark) pasteBookmark(bookmark.parentId!);
       },
     },
     { type: 'separator' },

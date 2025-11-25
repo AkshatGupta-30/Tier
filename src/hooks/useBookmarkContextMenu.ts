@@ -46,14 +46,14 @@ const useBookmarkContextMenu = () => {
 
   const openBookmark = () => {
     if (!bookmark) return;
-    if (isFolder) addBreadcrumb(bookmark);
+    if (isFolder) addBreadcrumb(bookmark as IBookmarkFolder);
     else window.open((bookmark as IBookmark).url);
   };
 
   const renameBookmark = (newBookmark: IBookmarkItem) => {
     if (!bookmark) return;
     if (Object.hasOwn(newBookmark, 'children')) {
-      updateFolder({ id: newBookmark.id, title: newBookmark.title });
+      updateFolder(newBookmark as IBookmark);
     } else {
       updateBookmark(newBookmark as IBookmark);
     }
@@ -62,8 +62,8 @@ const useBookmarkContextMenu = () => {
   const cutBookmark = () => {
     if (!bookmark) return;
     setCutCopyPasteBookmark(bookmark);
-    if (isFolder) removeFolder(bookmark.id);
-    else removeBookmark(bookmark.id);
+    if (isFolder) removeFolder(bookmark.id!);
+    else removeBookmark(bookmark.id!);
   };
 
   const copyBookmark = () => {
@@ -80,8 +80,8 @@ const useBookmarkContextMenu = () => {
 
   const deleteBookmark = () => {
     if (!bookmark) return;
-    if (isFolder) removeFolder(bookmark.id);
-    else removeBookmark(bookmark.id);
+    if (isFolder) removeFolder(bookmark.id!);
+    else removeBookmark(bookmark.id!);
   };
 
   return {

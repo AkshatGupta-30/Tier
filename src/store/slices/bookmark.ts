@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector, type PayloadAction } from '@reduxjs/toolkit';
 
 import type { IBookmark, IBookmarkFolder, IBookmarkItem, IBreadcrumbNode } from '@ts/bookmark';
 
@@ -31,9 +31,9 @@ const initialState: State = {
 const findFolder = (items: IBookmarkItem[], id: string): IBookmarkFolder | undefined => {
   for (const item of items) {
     if (Object.hasOwn(item, 'children')) {
-      const bookmarkFolder = item as IBookmarkFolder;
-      if (bookmarkFolder.id === id) return bookmarkFolder;
-      const found = findFolder(bookmarkFolder.children as IBookmarkFolder[], id);
+      const folder = item as IBookmarkFolder;
+      if (folder?.id === id) return folder;
+      const found = findFolder(folder.children as IBookmarkFolder[], id);
       if (found) return found;
     }
   }
@@ -44,17 +44,17 @@ const bookmarkSlice = createSlice({
   name: 'bookmark',
   initialState,
   reducers: {
-    setBookmarks: (state, { payload }: { payload: IBookmarkFolder }) => {
+    setBookmarks: (state, { payload }: PayloadAction<IBookmarkFolder>) => {
       state.bookmarks = payload;
       state.breadcrumbs = [{ ...initialBookmark, id: state.bookmarks.id }];
     },
-    createFreshBreadcrumb: (state, { payload }: { payload: IBreadcrumbNode }) => {
+    createFreshBreadcrumb: (state, { payload }: PayloadAction<IBreadcrumbNode>) => {
       state.breadcrumbs = [payload];
     },
-    addBreadcrumbNode: (state, { payload }: { payload: IBreadcrumbNode }) => {
+    addBreadcrumbNode: (state, { payload }: PayloadAction<IBreadcrumbNode>) => {
       state.breadcrumbs.push(payload);
     },
-    removeBreadcrumbNode: (state, { payload }: { payload: string }) => {
+    removeBreadcrumbNode: (state, { payload }: PayloadAction<string>) => {
       const index = state.breadcrumbs.findIndex((node) => node.id === payload);
       if (index > -1) {
         state.breadcrumbs = state.breadcrumbs.slice(0, index + 1);
@@ -63,8 +63,8 @@ const bookmarkSlice = createSlice({
     clearBreadcrumb: (state) => {
       state.breadcrumbs = [initialBookmark];
     },
-    addBookmark: (state, { payload }: { payload: IBookmark }) => {
-      if (state.breadcrumbs.length > 0) {
+    addBookmark: (state, { payload }: PayloadAction<IBookmark>) => {
+      if (state.breadcrumbs.length > 1) {
         const folder = findFolder(
           state.bookmarks.children,
           state.breadcrumbs[state.breadcrumbs.length - 1].id,
@@ -76,21 +76,22 @@ const bookmarkSlice = createSlice({
         state.bookmarks.children.push(payload);
       }
     },
-    addFolder: (state, { payload }: { payload: IBookmarkFolder }) => {
-      if (state.breadcrumbs.length > 0) {
+    addFolder: (state, { payload }: PayloadAction<IBookmarkFolder>) => {
+      const newFolder = { ...payload, children: [] };
+      if (state.breadcrumbs.length > 1) {
         const folder = findFolder(
           state.bookmarks.children,
           state.breadcrumbs[state.breadcrumbs.length - 1].id,
         );
         if (folder) {
-          (folder.children as IBookmarkItem[]).push(payload);
+          (folder.children as IBookmarkItem[]).push(newFolder);
         }
       } else {
-        state.bookmarks.children.push(payload);
+        state.bookmarks.children.push(newFolder);
       }
     },
-    removeBookmark: (state, { payload }: { payload: string }) => {
-      if (state.breadcrumbs.length > 0) {
+    removeBookmark: (state, { payload }: PayloadAction<string>) => {
+      if (state.breadcrumbs.length > 1) {
         const folder = findFolder(
           state.bookmarks.children,
           state.breadcrumbs[state.breadcrumbs.length - 1].id,
@@ -103,8 +104,8 @@ const bookmarkSlice = createSlice({
         state.bookmarks.children = state.bookmarks.children.filter(({ id }) => id !== payload);
       }
     },
-    removeFolder: (state, { payload }: { payload: string }) => {
-      if (state.breadcrumbs.length > 0) {
+    removeFolder: (state, { payload }: PayloadAction<string>) => {
+      if (state.breadcrumbs.length > 1) {
         const folder = findFolder(
           state.bookmarks.children,
           state.breadcrumbs[state.breadcrumbs.length - 1].id,
@@ -119,9 +120,9 @@ const bookmarkSlice = createSlice({
     },
     updateBookmark: (
       state,
-      { payload }: { payload: { id: string; title: string; url: string } },
+      { payload }: PayloadAction<{ id: string; title: string; url: string }>,
     ) => {
-      if (state.breadcrumbs.length > 0) {
+      if (state.breadcrumbs.length > 1) {
         const folder = findFolder(
           state.bookmarks.children,
           state.breadcrumbs[state.breadcrumbs.length - 1].id,
@@ -141,8 +142,8 @@ const bookmarkSlice = createSlice({
         }
       }
     },
-    updateFolder: (state, { payload }: { payload: { id: string; title: string } }) => {
-      if (state.breadcrumbs.length > 0) {
+    updateFolder: (state, { payload }: PayloadAction<{ id: string; title: string }>) => {
+      if (state.breadcrumbs.length > 1) {
         const folder = findFolder(
           state.bookmarks.children,
           state.breadcrumbs[state.breadcrumbs.length - 1].id,
@@ -162,7 +163,9 @@ const bookmarkSlice = createSlice({
     },
     showContextMenu: (
       state,
-      { payload }: { payload: { coordinates: { x: number; y: number }; bookmark: IBookmarkItem } },
+      {
+        payload,
+      }: PayloadAction<{ coordinates: { x: number; y: number }; bookmark: IBookmarkItem }>,
     ) => {
       state.contextMenu = { ...payload, visible: true };
     },

@@ -1,7 +1,8 @@
-import type { FC } from 'react';
+import { memo, type FC } from 'react';
 
 import type { IBookmark, IBookmarkFolder, IBookmarkItem } from '@ts/bookmark';
 
+import AddBookmarkButton from './AddBookmarkButton';
 import Bookmark from './Bookmark';
 import BookmarkFolder from './BookmarkFolder';
 import BookmarkMenu from './BookmarkMenu';
@@ -31,9 +32,10 @@ const BookmarkSection: FC<BookmarkSectionProps> = ({ bookmarks }) => {
           />
         );
       })}
+      <AddBookmarkButton />
       <BookmarkMenu />
     </div>
   );
 };
 
-export default BookmarkSection;
+export default memo(BookmarkSection);
