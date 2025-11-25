@@ -23,7 +23,6 @@ const useBookmarks = () => {
 
   const fetchBookmarks = async () => {
     const bookmarks = await chrome.bookmarks.getTree();
-    console.log(bookmarks);
     const [bookmarkManager] = bookmarks[0].children || [];
     dispatch(setBookmarks(bookmarkManager as IBookmarkFolder));
   };
