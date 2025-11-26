@@ -1,7 +1,6 @@
-import { FaCheck } from 'react-icons/fa';
-
-import { ThemeModeEnum } from '@ts/theme';
+import { COLORS } from '@constants/colors';
 import useTheme from '@hooks/useTheme';
+import { ThemeModeEnum } from '@ts/theme';
 
 interface ThemeModeProps {
   isSelected: boolean;
@@ -28,29 +27,19 @@ const THEMES: Record<ThemeModeEnum, ThemeMode> = {
   },
 } as const;
 
-const Checkbox = ({ isSelected }: { isSelected: boolean }) => {
-  return (
-    <div
-      className={`flex items-center justify-center w-5 aspect-square absolute top-0 right-0 m-1.5 rounded-sm  ${
-        isSelected ? 'bg-blue-600' : 'border-2 border-gray-600'
-      }`}
-    >
-      {isSelected && <FaCheck className="text-white" />}
-    </div>
-  );
-};
 
 const ThemeMode = ({ isSelected, theme, onClick }: ThemeModeProps) => {
   const { background, label, color } = THEMES[theme];
+  const { accentColor } = useTheme();
   return (
     <div
-      className="relative flex flex-col items-center gap-2 cursor-pointer"
+      className={`relative flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 border-2 rounded-lg p-1`}
+      style={{ borderColor: isSelected ? accentColor : COLORS.TRANSPARENT }}
       onClick={onClick}
     >
       <div className={`w-60 h-30 flex items-center justify-center rounded-lg ${background}`}>
         <p className={`text-center text-4xl font-extrabold ${color}`}>{label}</p>
       </div>
-      <Checkbox isSelected={isSelected} />
     </div>
   );
 };
