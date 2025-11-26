@@ -19,6 +19,8 @@ export const LABELS = {
   CREATE_FOLDER: 'Create Folder',
   UPDATE_BOOKMARK: 'Update Bookmark',
   UPDATE_FOLDER: 'Update Folder',
+  THEME: "Theme",
+  ACCENT_COLOR: "Accent Color",
 };
 
 export const PLACEHOLDERS = {
