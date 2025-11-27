@@ -1,3 +1,4 @@
+import { Activity } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -5,19 +6,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 
 import TierLogo from './Logo';
-import BreadCrumb from './BreadCrumb';
-import { Activity } from 'react';
+import SearchBar from './SearchBar';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isNotHomePage = location.pathname !== ROUTES.HOME;
+  const isHomePage = location.pathname === ROUTES.HOME;
 
   return (
     <header className="w-full h-16 flex items-center justify-between bg-black/50 p-2.5">
       <div className="flex flex-row w-full items-center gap-4">
-        <Activity mode={isNotHomePage ? 'visible' : 'hidden'}>
+        <Activity mode={isHomePage ? 'hidden' : 'visible'}>
           <FaArrowLeft
             className="aspect-square size-6 text-white/90 transform hover:scale-105 hover:text-white cursor-pointer transition-all duration-250 ease-in-out"
             role="button"
@@ -30,7 +30,10 @@ const Header = () => {
         </div>
       </div>
 
-      <BreadCrumb />
+      <Activity mode={isHomePage ? 'visible' : 'hidden'}>
+        <SearchBar />
+      </Activity>
+
       <div className="flex w-full items-center justify-end">
         <MdSettings
           className="aspect-square size-8 text-white/90 transform hover:scale-105 hover:text-white cursor-pointer transition-all duration-250 ease-in-out"

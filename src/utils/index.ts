@@ -23,3 +23,14 @@ export const getGoogleSearchUrl = (query: string) => {
   googleUrl.searchParams.append('q', query);
   return googleUrl.toString();
 };
+
+export const debounce = (callback: () => void, delay: number) => {
+  let timeout: number;
+
+  return () => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(callback, delay);
+  };
+};

@@ -1,15 +1,16 @@
 import { IoMdAdd } from 'react-icons/io';
+import type { MouseEvent } from 'react';
 
 import { LABELS } from '@constants/label';
 import { MODAL_TYPES } from '@constants/modals';
-import Modal from './modals';
 import useBookmarks from '@hooks/useBookmarks';
-import type { MouseEvent } from 'react';
+
+import Modal from './modals';
 
 const { ADD } = LABELS;
 
 const AddBookmarkButton = () => {
-  const { breadcrumbs } = useBookmarks();
+  const { breadcrumbs, bookmarkSearches } = useBookmarks();
 
   const handleAddBookmark = (e: MouseEvent) => {
     e.preventDefault();
@@ -22,6 +23,8 @@ const AddBookmarkButton = () => {
       },
     });
   };
+
+  if (bookmarkSearches) return null;
 
   return (
     <button

@@ -8,7 +8,7 @@ const Bookmark = ({ bookmark }: { bookmark: IBookmark }) => {
   const { title, url } = bookmark;
   const { handleContextMenu } = useBookmarkContextMenu();
 
-  const faviconUrl = getFaviconUrl(url);
+  const faviconUrl = url ? getFaviconUrl(url) : '';
 
   return (
     <a

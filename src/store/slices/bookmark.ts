@@ -12,6 +12,7 @@ const initialBookmark: IBookmarkFolder = {
 interface State {
   breadcrumbs: IBreadcrumbNode[];
   bookmarks: IBookmarkFolder;
+  searchBookmarks: IBookmarkItem[] | null;
   contextMenu: {
     visible: boolean;
     coordinates: { x: number; y: number };
@@ -23,6 +24,7 @@ interface State {
 const initialState: State = {
   breadcrumbs: [initialBookmark],
   bookmarks: initialBookmark,
+  searchBookmarks: null,
   contextMenu: {
     visible: false,
     coordinates: { x: 0, y: 0 },
@@ -162,6 +164,12 @@ const bookmarkSlice = createSlice({
         }
       }
     },
+    setSearchBookmarks: (state, { payload }: PayloadAction<IBookmarkItem[]>) => {
+      state.searchBookmarks = payload;
+    },
+    removeSearchBookmarks: (state) => {
+      state.searchBookmarks = null;
+    },
     showContextMenu: (
       state,
       {
@@ -188,6 +196,8 @@ export const {
   updateBookmark,
   updateFolder,
   setBookmarks,
+  setSearchBookmarks,
+  removeSearchBookmarks,
   createFreshBreadcrumb,
   clearBreadcrumb,
   addBreadcrumbNode,

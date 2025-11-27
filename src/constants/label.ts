@@ -22,5 +22,5 @@ export const LABELS = {
 };
 
 export const PLACEHOLDERS = {
-  SEARCH: 'Search Google...',
+  SEARCH: 'Search Google or bookmarks...',
 };

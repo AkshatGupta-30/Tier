@@ -13,13 +13,16 @@ import {
   updateFolder as editFolder,
   createFreshBreadcrumb,
   clearBreadcrumb,
+  setSearchBookmarks,
 } from '@store/slices/bookmark';
 import type { IBookmark, IBookmarkFolder, IBreadcrumbNode } from '@ts/bookmark';
 
 const useBookmarks = () => {
   const dispatch = useAppDispatch();
-  const { children: bookmarks = [] } = useAppSelector(selectCurrentFolder) || {};
-  const { breadcrumbs } = useAppSelector(bookmarkState);
+  const { children } = useAppSelector(selectCurrentFolder) || {};
+  const { breadcrumbs, searchBookmarks: bookmarkSearches } = useAppSelector(bookmarkState);
+
+  const bookmarks = bookmarkSearches || children || [];
 
   const fetchBookmarks = async () => {
     const bookmarks = await chrome.bookmarks.getTree();
@@ -40,6 +43,13 @@ const useBookmarks = () => {
   const updateBookmark = ({ id, title, url }: IBookmark) => {
     dispatch(editBookmark({ id, title, url }));
     chrome.bookmarks.update(id, { title, url });
+  };
+
+  const searchBookmarks = (query: string) => {
+    chrome.bookmarks.search({ query }).then((bookmarks) => {
+      console.log({ bookmarks });
+      dispatch(setSearchBookmarks(bookmarks));
+    });
   };
 
   const addFolder = async ({ parentId, title }: Omit<IBookmarkFolder, 'id' | 'children'>) => {
@@ -69,10 +79,12 @@ const useBookmarks = () => {
   return {
     bookmarks,
     breadcrumbs,
+    bookmarkSearches,
     fetchBookmarks,
     addBookmark,
     removeBookmark,
     updateBookmark,
+    searchBookmarks,
     addFolder,
     removeFolder,
     updateFolder,
