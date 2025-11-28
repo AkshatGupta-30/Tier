@@ -13,7 +13,7 @@ interface BookmarkSectionProps {
 
 const BookmarkSection: FC<BookmarkSectionProps> = ({ bookmarks }) => {
   return (
-    <div className="inline-grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] justify-center gap-8 w-full p-10">
+    <div className="inline-grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] justify-center gap-8 w-full">
       {bookmarks
         ?.filter(({ children, url }) => url || children)
         ?.map((bookmark) => {

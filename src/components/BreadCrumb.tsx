@@ -18,7 +18,7 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
   return (
     <>
       <p
-        className={`text-white/90 hover:underline cursor-pointer text-md ${
+        className={`text-white/90 hover:underline cursor-pointer text-lg ${
           isLast ? 'font-medium pointer-events-none' : ''
         }`}
         role="button"
@@ -41,7 +41,7 @@ const BreadCrumb = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex flex-row w-full items-center justify-center">
+    <div className="flex flex-row w-full items-center justify-start pl-6">
       {breadcrumbs.map((node, index) => (
         <Node
           key={node.id}

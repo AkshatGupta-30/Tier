@@ -21,7 +21,7 @@ const Settings = () => {
   return (
     <div className="min-h-screen w-full bg-linear-to-br from-gray-900 via-gray-800 to-black flex flex-col relative overflow-hidden">
       <Header />
-      <div className="flex-1 flex flex-col p-5">
+      <div className="flex-1 flex flex-col p-10 pt-5">
         <SettingsSection
           title="Theme"
           component={<SwitchTheme />}
