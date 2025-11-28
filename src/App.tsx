@@ -5,6 +5,7 @@ import { ROUTES } from '@constants/routes';
 import useBookmarks from '@hooks/useBookmarks';
 import NewTab from '@pages/NewTab';
 import Settings from '@pages/Settings';
+import useTheme from '@hooks/useTheme';
 
 const routes = [
   {
@@ -24,9 +25,11 @@ const router = createMemoryRouter(routes, {
 
 const App = () => {
   const { fetchBookmarks } = useBookmarks();
+  const { backgroundOption, switchBackgroundOption } = useTheme();
 
   useEffect(() => {
     fetchBookmarks();
+    switchBackgroundOption(backgroundOption);
   }, []);
 
   return <RouterProvider router={router} />;

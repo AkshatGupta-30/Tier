@@ -10,7 +10,7 @@ const NewTab = () => {
 
   return (
     <div
-      className="relative min-h-screen max-h-screen w-full bg-linear-to-br from-gray-900 via-gray-800 to-black flex flex-col"
+      className="relative min-h-screen max-h-screen w-full flex flex-col"
       onContextMenu={handleEmptySpaceContextMenu}
     >
       {/* Background Effects */}
