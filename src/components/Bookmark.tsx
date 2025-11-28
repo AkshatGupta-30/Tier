@@ -14,7 +14,7 @@ const Bookmark = ({ bookmark }: { bookmark: IBookmark }) => {
     <a
       href={url}
       onContextMenu={(e) => handleContextMenu(e, bookmark)}
-      className="relative w-24 flex flex-col items-center justify-start gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
+      className="relative w-full flex flex-col items-center justify-start gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
     >
       <div className="min-w-15 min-h-15 mb-3 rounded-lg bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
         <img

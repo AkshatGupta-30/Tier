@@ -15,7 +15,7 @@ const BookmarkFolder = ({ bookmark }: { bookmark: BookmarkFolderType }) => {
     <button
       onClick={() => addBreadcrumb(bookmark)}
       onContextMenu={(e) => handleContextMenu(e, bookmark)}
-      className="relative w-24 flex flex-col items-center justify-start gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
+      className="relative w-full flex flex-col items-center justify-start gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
     >
       <div className="w-15 h-15 mb-3 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
         <FaFolder className="w-9 h-9" />

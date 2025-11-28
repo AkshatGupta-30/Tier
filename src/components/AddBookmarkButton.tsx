@@ -28,7 +28,7 @@ const AddBookmarkButton = () => {
 
   return (
     <button
-      className="relative w-24 flex flex-col items-center justify-center gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
+      className="relative w-full flex flex-col items-center justify-center gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
       onClick={handleAddBookmark}
       onContextMenu={(e) => {
         e.preventDefault();

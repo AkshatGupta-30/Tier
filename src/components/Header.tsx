@@ -15,7 +15,7 @@ const Header = () => {
   const isHomePage = location.pathname === ROUTES.HOME;
 
   return (
-    <header className="w-full h-16 flex items-center justify-between bg-black/50 p-2.5">
+    <header className="sticky top-0 z-50 w-full h-16 flex items-center justify-between bg-black/50 backdrop-blur-md p-2.5">
       <div className="flex flex-row w-full items-center gap-4">
         <Activity mode={isHomePage ? 'hidden' : 'visible'}>
           <FaArrowLeft

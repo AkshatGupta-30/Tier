@@ -13,11 +13,10 @@ interface BookmarkSectionProps {
 
 const BookmarkSection: FC<BookmarkSectionProps> = ({ bookmarks }) => {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-8 w-full p-10">
+    <div className="inline-grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] justify-center gap-8 w-full p-10">
       {bookmarks
         ?.filter(({ children, url }) => url || children)
         ?.map((bookmark) => {
-          console.log('🚀 -- BookmarkSection -- bookmark:', bookmark);
           const { id } = bookmark;
           if (Object.hasOwn(bookmark, 'children')) {
             return (
