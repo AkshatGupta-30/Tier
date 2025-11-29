@@ -18,7 +18,7 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
   return (
     <>
       <p
-        className={`text-white/90 hover:underline cursor-pointer text-lg ${
+        className={`text-black/90 dark:text-white/90 hover:underline cursor-pointer text-lg ${
           isLast ? 'font-medium pointer-events-none' : ''
         }`}
         role="button"
@@ -26,7 +26,9 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
       >
         {truncateText(title)}
       </p>
-      {!isLast && <MdOutlineNavigateNext className="text-white/90 text-md mx-1" />}
+      {!isLast && (
+        <MdOutlineNavigateNext className="text-black/90 dark:text-white/90 text-md mx-1" />
+      )}
     </>
   );
 };

@@ -190,7 +190,7 @@ const BookmarkMenu = () => {
     <Activity mode={visible ? 'visible' : 'hidden'}>
       <div
         ref={ref}
-        className={`fixed p-1.5 bg-black rounded-lg min-w-48 overflow-scroll ${hideScrollbar}`}
+        className={`fixed p-1.5 bg-gray-200 dark:bg-gray-800 rounded-lg min-w-48 overflow-scroll ${hideScrollbar}`}
         style={{
           top: coordinates.y,
           left: coordinates.x,
@@ -203,7 +203,7 @@ const BookmarkMenu = () => {
             return (
               <div
                 key={index}
-                className="h-px w-full my-1 bg-white/20"
+                className="h-px w-full my-1 bg-black/10 dark:bg-white/10"
               />
             );
           }
@@ -215,7 +215,7 @@ const BookmarkMenu = () => {
                 onClick?.();
                 handleClose();
               }}
-              className={`w-full p-2 text-white hover:bg-white/20 cursor-pointer text-left text-md rounded-sm ${className}`}
+              className={`w-full p-2 text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-left text-md rounded-sm ${className}`}
               disabled={disabled}
             >
               {label}

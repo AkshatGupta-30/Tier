@@ -31,7 +31,7 @@ const ThemeMode = ({ isSelected, theme, onClick }: ThemeModeProps) => {
   return (
     <div
       className={`relative flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 border-2 rounded-lg p-1 ${
-        isSelected ? 'border-white' : 'border-transparent'
+        isSelected ? 'border-black dark:border-white' : 'border-transparent'
       }`}
       onClick={onClick}
     >

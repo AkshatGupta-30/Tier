@@ -35,10 +35,10 @@ const AddBookmarkButton = () => {
         e.stopPropagation();
       }}
     >
-      <div className="min-w-15 min-h-15 mb-3 rounded-lg bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-        <IoMdAdd className="w-9 h-9 object-contain opacity-80 group-hover:opacity-100 transition-opacity text-white" />
+      <div className="min-w-15 min-h-15 mb-3 rounded-lg bg-black/10 dark:bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+        <IoMdAdd className="w-9 h-9 object-contain opacity-80 group-hover:opacity-100 transition-opacity text-black dark:text-white" />
       </div>
-      <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors text-center">
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors text-center">
         {ADD}
       </span>
     </button>

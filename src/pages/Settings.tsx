@@ -12,7 +12,7 @@ interface SettingsSectionProps {
 const SettingsSection = ({ title, component }: SettingsSectionProps) => {
   return (
     <section className="flex flex-col gap-3">
-      <label className="text-white text-base font-bold px-10">{title}</label>
+      <label className="text-black dark:text-white text-base font-bold px-10">{title}</label>
       {component}
     </section>
   );

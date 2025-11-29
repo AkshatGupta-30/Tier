@@ -83,12 +83,12 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
   };
 
   return (
-    <section className="max-w-[90%] max-h-[90%] bg-gray-800 rounded-lg flex flex-col justify-start overflow-hidden border border-gray-700">
-      <header className="flex items-center justify-between bg-gray-900 px-6 py-4">
-        <p className="text-xl font-semibold text-white">{modalTitle()}</p>
+    <section className="max-w-[90%] max-h-[90%] bg-gray-200 dark:bg-gray-800 rounded-lg flex flex-col justify-start overflow-hidden border border-gray-300 dark:border-gray-700">
+      <header className="flex items-center justify-between bg-gray-100 dark:bg-gray-900 px-6 py-4">
+        <p className="text-xl font-semibold text-black dark:text-white">{modalTitle()}</p>
         <IoMdClose
           role="button"
-          className="text-white text-xl cursor-pointer"
+          className="text-black dark:text-white text-xl cursor-pointer"
           onClick={resetForm}
         />
       </header>
@@ -102,8 +102,8 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
             <p
               className={`w-full text-sm font-medium text-center p-2 transition-colors ${
                 type === 'bookmark'
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-300 cursor-pointer hover:bg-gray-700/25 hover:text-white'
+                  ? 'bg-gray-300 text-black dark:bg-gray-700 dark:text-white'
+                  : 'text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-300/25 hover:dark:bg-gray-700/25 hover:text-black hover:dark:text-white'
               }`}
               onClick={() => setType('bookmark')}
             >
@@ -112,8 +112,8 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
             <p
               className={`w-full text-sm font-medium text-center p-2 transition-colors ${
                 type === 'folder'
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-300 cursor-pointer hover:bg-gray-700/25 hover:text-white'
+                  ? 'bg-gray-300 text-black dark:bg-gray-700 dark:text-white'
+                  : 'text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-300/25 hover:dark:bg-gray-700/25 hover:text-black hover:dark:text-white'
               }`}
               onClick={() => setType('folder')}
             >
@@ -127,7 +127,7 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="w-full p-2 border border-gray-700 rounded-lg text-white text-sm placeholder:text-gray-400 outline-none focus:ring focus:ring-gray-600"
+          className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg text-black dark:text-white text-sm placeholder:text-gray-600 placeholder:dark:text-gray-400 outline-none focus:ring focus:ring-gray-400 focus:dark:ring-gray-600"
         />
         {!isFolderType && (
           <input
@@ -136,20 +136,20 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             required
-            className="w-full p-2 border border-gray-700 rounded-lg text-white text-sm placeholder:text-gray-400 outline-none focus:ring focus:ring-gray-600"
+            className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg text-black dark:text-white text-sm placeholder:text-gray-600 placeholder:dark:text-gray-400 outline-none focus:ring focus:ring-gray-400 focus:dark:ring-gray-600"
           />
         )}
         <div className="flex items-center justify-end pt-3 gap-5">
           <button
             type="reset"
-            className="px-5 py-2 bg-gray-700 text-white/80 rounded-full text-base font-normal cursor-pointer"
+            className="px-5 py-2 bg-gray-300 dark:bg-gray-700 text-black/80 dark:text-white/80 rounded-full text-base font-normal cursor-pointer"
           >
             {CANCEL}
           </button>
           <button
             disabled={ctaDisabled()}
             type="submit"
-            className="px-5 py-2 bg-indigo-700 disabled:bg-indigo-700/60 text-white disabled:text-white/50 rounded-full text-base font-medium disabled:cursor-default cursor-pointer"
+            className="px-5 py-2 bg-indigo-300 disabled:bg-indigo-300/60 text-black disabled:text-black/50 dark:bg-indigo-700 disabled:dark:bg-indigo-700/60 dark:text-white disabled:dark:text-white/50 rounded-full text-base font-medium disabled:cursor-default cursor-pointer"
           >
             {isUpdating ? UPDATE : CREATE}
           </button>

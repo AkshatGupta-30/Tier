@@ -6,36 +6,31 @@ import type { BackgroundOption } from '@ts/theme';
 interface BackgroundCardsProps {
   background: BackgroundOption;
   isSelected: boolean;
+  index: number;
 }
 
-const BackgroundCards = ({ isSelected, background }: BackgroundCardsProps) => {
+const BackgroundCards = ({ isSelected, background, index }: BackgroundCardsProps) => {
   const { label, classes } = background || {};
-  const { switchBackgroundOption, isLightMode } = useTheme();
+  const { switchBackgroundOption } = useTheme();
 
   return (
     <div
       className={`relative flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 border-2 rounded-lg p-1 ${
-        isSelected ? 'border-white' : 'border-transparent'
+        isSelected ? 'border-black dark:border-white' : 'border-transparent'
       }`}
     >
       <button
-        className={`w-50 h-30 flex items-center justify-center rounded-lg ${classes}`}
-        onClick={() => switchBackgroundOption(background)}
+        className={`group-hover:cursor-pointer w-50 h-30 flex items-center justify-center rounded-lg ${classes}`}
+        onClick={() => switchBackgroundOption(index)}
       >
-        <p
-          className={`text-center text-xl font-extrabold ${
-            isLightMode ? 'text-black' : 'text-white'
-          }`}
-        >
-          {label}
-        </p>
+        <p className={'text-center text-xl font-extrabold text-black dark:text-white'}>{label}</p>
       </button>
     </div>
   );
 };
 
 const CustomBackground = () => {
-  const { BACKGROUND_OPTIONS, backgroundOption } = useTheme();
+  const { backgroundOptionIndex, BACKGROUND_OPTIONS } = useTheme();
 
   return (
     <List
@@ -50,7 +45,8 @@ const CustomBackground = () => {
           <BackgroundCards
             key={id}
             background={background}
-            isSelected={id === backgroundOption?.id}
+            isSelected={index === backgroundOptionIndex}
+            index={index}
           />
         );
       }}
