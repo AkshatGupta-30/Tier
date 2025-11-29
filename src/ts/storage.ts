@@ -1,0 +1,4 @@
+export enum LocalStorageKeys {
+  THEME_MODE = 'THEME_MODE',
+  BACKGROUND_OPTION_INDEX = 'BACKGROUND_OPTION_INDEX',
+}

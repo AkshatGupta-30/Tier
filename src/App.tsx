@@ -6,11 +6,11 @@ import useTheme from '@hooks/useTheme';
 
 const App = () => {
   const { fetchBookmarks } = useBookmarks();
-  const { backgroundOptionIndex, switchBackgroundOption } = useTheme();
+  const { initializeTheme } = useTheme();
 
   useEffect(() => {
     fetchBookmarks();
-    switchBackgroundOption(backgroundOptionIndex);
+    initializeTheme();
   }, []);
 
   return <NewTab />;
