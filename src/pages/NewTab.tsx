@@ -13,14 +13,7 @@ const NewTab = () => {
       className="relative min-h-screen max-h-screen w-full flex flex-col"
       onContextMenu={handleEmptySpaceContextMenu}
     >
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-500/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/20 rounded-full blur-[120px] animate-pulse delay-1000" />
-      </div>
-
       <Header />
-
       {/* Content */}
       <main className="z-10 flex flex-1 flex-col p-10 gap-5 pt-5 items-center w-full overflow-y-auto animate-fade-in scrollbar-hidden">
         {/* <div className="mb-12 text-center">

@@ -25,11 +25,11 @@ const router = createMemoryRouter(routes, {
 
 const App = () => {
   const { fetchBookmarks } = useBookmarks();
-  const { backgroundOption, switchBackgroundOption } = useTheme();
+  const { backgroundOptionIndex, switchBackgroundOption } = useTheme();
 
   useEffect(() => {
     fetchBookmarks();
-    switchBackgroundOption(backgroundOption);
+    switchBackgroundOption(backgroundOptionIndex);
   }, []);
 
   return <RouterProvider router={router} />;
