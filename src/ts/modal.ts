@@ -8,4 +8,5 @@ export interface CreateBookmarkModalProps {
 
 export interface ModalPropsMap {
   CREATE_BOOKMARK: CreateBookmarkModalProps;
+  SETTINGS: undefined;
 }

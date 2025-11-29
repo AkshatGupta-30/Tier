@@ -17,8 +17,8 @@ const Modal = () => {
   return createPortal(
     <Activity mode={isOpen ? 'visible' : 'hidden'}>
       <div className={`fixed inset-0 z-50 ${className?.modal}`}>
-        <button className="fixed inset-0 bg-black/50 z-0" />
-        <div className="relative z-1 w-full h-full flex items-center justify-center p-20">
+        <button className="fixed inset-0 bg-black/80 z-0" />
+        <div className="relative z-1 w-full h-full flex items-center justify-center p-10">
           {Component && <Component {...childrenProps!} />}
         </div>
       </div>

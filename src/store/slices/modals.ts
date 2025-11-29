@@ -6,7 +6,7 @@ import type { ModalPropsMap } from '@ts/modal';
 export interface ModalPropsType<T = unknown> {
   openModalType: ModalType;
   closeOnOutsideClick?: boolean;
-  childrenProps: T;
+  childrenProps?: T;
   className?: {
     modal?: string;
     overlay?: string;

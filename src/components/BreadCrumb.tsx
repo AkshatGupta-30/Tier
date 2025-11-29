@@ -1,8 +1,6 @@
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 import { MdOutlineNavigateNext } from 'react-icons/md';
-import { useLocation } from 'react-router-dom';
 
-import { BREADCRUMBS } from '@constants/breadcrumb';
 import useBookmarks from '@hooks/useBookmarks';
 import type { IBreadcrumbNode } from '@ts/bookmark';
 import { truncateText } from '@utils';
@@ -34,13 +32,7 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
 };
 
 const BreadCrumb = () => {
-  const { breadcrumbs, createNewBreadcrumb } = useBookmarks();
-
-  const location = useLocation();
-
-  useEffect(() => {
-    createNewBreadcrumb(BREADCRUMBS[location.pathname]);
-  }, [location.pathname]);
+  const { breadcrumbs } = useBookmarks();
 
   return (
     <div className="flex flex-row w-full items-center justify-start pl-6">
