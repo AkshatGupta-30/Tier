@@ -15,12 +15,12 @@ const BackgroundCards = ({ isSelected, background, index }: BackgroundCardsProps
 
   return (
     <div
-      className={`relative flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 border-2 rounded-lg p-1 ${
+      className={`relative flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
         isSelected ? 'border-black dark:border-white' : 'border-transparent'
       }`}
     >
       <button
-        className={`group-hover:cursor-pointer w-50 h-30 flex items-center justify-center rounded-lg ${classes}`}
+        className={`flex h-30 w-50 items-center justify-center rounded-lg group-hover:cursor-pointer ${classes}`}
         onClick={() => switchBackgroundOption(index)}
       >
         <p className={'text-center text-xl font-extrabold text-black dark:text-white'}>{label}</p>
@@ -34,7 +34,7 @@ const CustomBackground = () => {
 
   return (
     <List
-      className="flex flex-row justify-start gap-2 scrollbar-hidden px-10"
+      className="scrollbar-hidden flex flex-row justify-start gap-2 px-10"
       rowCount={BACKGROUND_OPTIONS?.length || 0}
       rowHeight={6}
       rowProps={{ backgrounds: BACKGROUND_OPTIONS }}

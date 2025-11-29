@@ -14,16 +14,16 @@ interface SettingsSectionProps {
 
 const SettingsHeader = () => {
   return (
-    <header className="sticky top-0 z-50 w-full h-16 flex items-center justify-between bg-black/50 backdrop-blur-md py-2.5 pl-6 pr-3">
-      <div className="flex flex-row w-full items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-black/50 py-2.5 pr-3 pl-6 backdrop-blur-md">
+      <div className="flex w-full flex-row items-center justify-between gap-4">
         <div className="flex flex-row items-center gap-2">
-          <p className="text-white  text-3xl font-bold">Settings</p>
+          <p className="text-3xl font-bold text-white">Settings</p>
         </div>
         <button
-          className="p-2 cursor-pointer "
+          className="cursor-pointer p-2"
           onClick={() => Modal.close()}
         >
-          <IoMdClose className="text-xl text-white " />
+          <IoMdClose className="text-xl text-white" />
         </button>
       </div>
     </header>
@@ -33,7 +33,7 @@ const SettingsHeader = () => {
 const SettingsSection = ({ title, component }: SettingsSectionProps) => {
   return (
     <section className="flex flex-col gap-3">
-      <label className="text-black dark:text-white text-base font-bold px-10">{title}</label>
+      <label className="px-10 text-base font-bold text-black dark:text-white">{title}</label>
       {component}
     </section>
   );
@@ -43,10 +43,10 @@ const SettingsModal = () => {
   const { backgroundColor } = useTheme();
   return (
     <div
-      className={`max-h-full flex-1 flex flex-col relative overflow-hidden rounded-xl ${backgroundColor.classes}`}
+      className={`relative flex max-h-full flex-1 flex-col overflow-hidden rounded-xl ${backgroundColor.classes}`}
     >
       <SettingsHeader />
-      <div className={'flex-1 flex flex-col py-5 gap-8 overflow-y-auto scrollbar-hidden'}>
+      <div className={'scrollbar-hidden flex flex-1 flex-col gap-8 overflow-y-auto py-5'}>
         <SettingsSection
           title="Theme"
           component={<SwitchTheme />}

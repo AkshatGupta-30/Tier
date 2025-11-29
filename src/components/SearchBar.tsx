@@ -27,15 +27,15 @@ const SearchBar = () => {
       onSubmit={handleSearch}
       className="w-full max-w-2xl"
     >
-      <div className="relative group">
-        <div className="absolute z-1 inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+      <div className="group relative">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-1 flex items-center pl-4">
           <FcGoogle className="text-2xl" />
         </div>
         <input
           type="text"
           value={query}
           onChange={handleChange}
-          className="block w-full pl-12 pr-4 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+          className="block w-full rounded-full border border-white/20 bg-white/10 py-3 pr-4 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-white/20 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
           placeholder={PLACEHOLDERS.SEARCH}
           autoFocus
         />

@@ -5,7 +5,6 @@ interface TierLogoProps {
   className?: string;
 }
 
-
 const TierLogo: FC<TierLogoProps> = ({ size = 480, className = '' }) => {
   return (
     <img

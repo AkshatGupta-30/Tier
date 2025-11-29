@@ -30,12 +30,12 @@ const ThemeMode = ({ isSelected, theme, onClick }: ThemeModeProps) => {
   const { background, label, color } = THEMES[theme];
   return (
     <div
-      className={`relative flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 border-2 rounded-lg p-1 ${
+      className={`relative flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
         isSelected ? 'border-black dark:border-white' : 'border-transparent'
       }`}
       onClick={onClick}
     >
-      <div className={`w-60 h-30 flex items-center justify-center rounded-lg ${background}`}>
+      <div className={`flex h-30 w-60 items-center justify-center rounded-lg ${background}`}>
         <p className={`text-center text-4xl font-extrabold ${color}`}>{label}</p>
       </div>
     </div>

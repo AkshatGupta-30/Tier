@@ -83,37 +83,37 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
   };
 
   return (
-    <section className="max-w-[90%] max-h-[90%] bg-gray-200 dark:bg-gray-800 rounded-lg flex flex-col justify-start overflow-hidden border border-gray-300 dark:border-gray-700">
-      <header className="flex items-center justify-between bg-gray-100 dark:bg-gray-900 px-6 py-4">
+    <section className="flex max-h-[90%] max-w-[90%] flex-col justify-start overflow-hidden rounded-lg border border-gray-300 bg-gray-200 dark:border-gray-700 dark:bg-gray-800">
+      <header className="flex items-center justify-between bg-gray-100 px-6 py-4 dark:bg-gray-900">
         <p className="text-xl font-semibold text-black dark:text-white">{modalTitle()}</p>
         <IoMdClose
           role="button"
-          className="text-black dark:text-white text-xl cursor-pointer"
+          className="cursor-pointer text-xl text-black dark:text-white"
           onClick={resetForm}
         />
       </header>
       <form
-        className="flex flex-col gap-5 p-6 pt-8 w-[500px]"
+        className="flex w-[500px] flex-col gap-5 p-6 pt-8"
         onSubmit={handleCreateBookmark}
         onReset={resetForm}
       >
         <Activity mode={isUpdating ? 'hidden' : 'visible'}>
-          <div className="w-full flex items-center border border-gray-700 rounded-lg overflow-hidden">
+          <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-700">
             <p
-              className={`w-full text-sm font-medium text-center p-2 transition-colors ${
+              className={`w-full p-2 text-center text-sm font-medium transition-colors ${
                 type === 'bookmark'
                   ? 'bg-gray-300 text-black dark:bg-gray-700 dark:text-white'
-                  : 'text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-300/25 hover:dark:bg-gray-700/25 hover:text-black hover:dark:text-white'
+                  : 'cursor-pointer text-gray-700 hover:bg-gray-300/25 hover:text-black dark:text-gray-300 hover:dark:bg-gray-700/25 hover:dark:text-white'
               }`}
               onClick={() => setType('bookmark')}
             >
               {BOOKMARK}
             </p>
             <p
-              className={`w-full text-sm font-medium text-center p-2 transition-colors ${
+              className={`w-full p-2 text-center text-sm font-medium transition-colors ${
                 type === 'folder'
                   ? 'bg-gray-300 text-black dark:bg-gray-700 dark:text-white'
-                  : 'text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-300/25 hover:dark:bg-gray-700/25 hover:text-black hover:dark:text-white'
+                  : 'cursor-pointer text-gray-700 hover:bg-gray-300/25 hover:text-black dark:text-gray-300 hover:dark:bg-gray-700/25 hover:dark:text-white'
               }`}
               onClick={() => setType('folder')}
             >
@@ -127,7 +127,7 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg text-black dark:text-white text-sm placeholder:text-gray-600 placeholder:dark:text-gray-400 outline-none focus:ring focus:ring-gray-400 focus:dark:ring-gray-600"
+          className="w-full rounded-lg border border-gray-300 p-2 text-sm text-black outline-none placeholder:text-gray-600 focus:ring focus:ring-gray-400 dark:border-gray-700 dark:text-white placeholder:dark:text-gray-400 focus:dark:ring-gray-600"
         />
         {!isFolderType && (
           <input
@@ -136,20 +136,20 @@ const CreateBookmarkModal = ({ bookmark, parentId, createFolder }: CreateBookmar
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             required
-            className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg text-black dark:text-white text-sm placeholder:text-gray-600 placeholder:dark:text-gray-400 outline-none focus:ring focus:ring-gray-400 focus:dark:ring-gray-600"
+            className="w-full rounded-lg border border-gray-300 p-2 text-sm text-black outline-none placeholder:text-gray-600 focus:ring focus:ring-gray-400 dark:border-gray-700 dark:text-white placeholder:dark:text-gray-400 focus:dark:ring-gray-600"
           />
         )}
-        <div className="flex items-center justify-end pt-3 gap-5">
+        <div className="flex items-center justify-end gap-5 pt-3">
           <button
             type="reset"
-            className="px-5 py-2 bg-gray-300 dark:bg-gray-700 text-black/80 dark:text-white/80 rounded-full text-base font-normal cursor-pointer"
+            className="cursor-pointer rounded-full bg-gray-300 px-5 py-2 text-base font-normal text-black/80 dark:bg-gray-700 dark:text-white/80"
           >
             {CANCEL}
           </button>
           <button
             disabled={ctaDisabled()}
             type="submit"
-            className="px-5 py-2 bg-indigo-300 disabled:bg-indigo-300/60 text-black disabled:text-black/50 dark:bg-indigo-700 disabled:dark:bg-indigo-700/60 dark:text-white disabled:dark:text-white/50 rounded-full text-base font-medium disabled:cursor-default cursor-pointer"
+            className="cursor-pointer rounded-full bg-indigo-300 px-5 py-2 text-base font-medium text-black disabled:cursor-default disabled:bg-indigo-300/60 disabled:text-black/50 dark:bg-indigo-700 dark:text-white disabled:dark:bg-indigo-700/60 disabled:dark:text-white/50"
           >
             {isUpdating ? UPDATE : CREATE}
           </button>

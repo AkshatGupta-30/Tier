@@ -16,8 +16,8 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
   return (
     <>
       <p
-        className={`text-black/90 dark:text-white/90 hover:underline cursor-pointer text-lg ${
-          isLast ? 'font-medium pointer-events-none' : ''
+        className={`cursor-pointer text-lg text-black/90 hover:underline dark:text-white/90 ${
+          isLast ? 'pointer-events-none font-medium' : ''
         }`}
         role="button"
         onClick={() => removeBreadcrumb(id)}
@@ -25,7 +25,7 @@ const Node: FC<NodeProps> = ({ id, title, isLast }) => {
         {truncateText(title)}
       </p>
       {!isLast && (
-        <MdOutlineNavigateNext className="text-black/90 dark:text-white/90 text-md mx-1" />
+        <MdOutlineNavigateNext className="text-md mx-1 text-black/90 dark:text-white/90" />
       )}
     </>
   );
@@ -35,7 +35,7 @@ const BreadCrumb = () => {
   const { breadcrumbs } = useBookmarks();
 
   return (
-    <div className="flex flex-row w-full items-center justify-start pl-6">
+    <div className="flex w-full flex-row items-center justify-start pl-6">
       {breadcrumbs.map((node, index) => (
         <Node
           key={node.id}

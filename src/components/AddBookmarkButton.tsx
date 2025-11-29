@@ -28,17 +28,17 @@ const AddBookmarkButton = () => {
 
   return (
     <button
-      className="relative w-full flex flex-col items-center justify-center gap-auto transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg cursor-pointer"
+      className="gap-auto relative flex w-full cursor-pointer flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg"
       onClick={handleAddBookmark}
       onContextMenu={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
     >
-      <div className="min-w-15 min-h-15 mb-3 rounded-lg bg-black/10 dark:bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-        <IoMdAdd className="w-9 h-9 object-contain opacity-80 group-hover:opacity-100 transition-opacity text-black dark:text-white" />
+      <div className="mb-3 flex min-h-15 min-w-15 items-center justify-center rounded-lg bg-black/10 transition-transform duration-300 group-hover:scale-110 dark:bg-white/10">
+        <IoMdAdd className="h-9 w-9 object-contain text-black opacity-80 transition-opacity group-hover:opacity-100 dark:text-white" />
       </div>
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors text-center">
+      <span className="text-center text-sm font-medium text-gray-700 transition-colors group-hover:text-black dark:text-gray-300 dark:group-hover:text-white">
         {ADD}
       </span>
     </button>

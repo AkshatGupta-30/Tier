@@ -8,8 +8,8 @@ import Modal from './modals';
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 w-full h-16 flex items-center justify-between bg-black/50 backdrop-blur-md p-2.5">
-      <div className="flex flex-row w-full items-center gap-4">
+    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-black/50 p-2.5 backdrop-blur-md">
+      <div className="flex w-full flex-row items-center gap-4">
         {/* <Activity mode={isHomePage ? 'hidden' : 'visible'}>
           <FaArrowLeft
             className="aspect-square size-6 text-white/90 transform hover:scale-105 hover:text-white cursor-pointer transition-all duration-250 ease-in-out"
@@ -27,7 +27,7 @@ const Header = () => {
 
       <div className="flex w-full items-center justify-end">
         <MdSettings
-          className="aspect-square size-8 text-white/90 transform hover:scale-105 hover:text-white cursor-pointer transition-all duration-250 ease-in-out"
+          className="aspect-square size-8 transform cursor-pointer text-white/90 transition-all duration-250 ease-in-out hover:scale-105 hover:text-white"
           onClick={() =>
             Modal.open({ openModalType: MODAL_TYPES.SETTINGS, childrenProps: undefined })
           }
