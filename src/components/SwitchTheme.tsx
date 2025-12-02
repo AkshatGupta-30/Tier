@@ -46,7 +46,7 @@ const SwitchTheme = () => {
   const { isLightMode, switchTheme } = useTheme();
 
   return (
-    <div className="flex flex-row items-center gap-5 px-10">
+    <div className="mt-3 flex flex-row items-center gap-5 px-10">
       <ThemeMode
         theme={ThemeModeEnum.LIGHT}
         isSelected={isLightMode}

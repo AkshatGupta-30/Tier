@@ -5,8 +5,10 @@ export enum ThemeModeEnum {
 
 export interface BackgroundOption {
   id: string;
-  label: string;
   classes: string;
-  theme: string;
-  type: string;
+  type: 'solid' | 'gradient' | 'image' | 'button';
+  label?: string;
+  theme?: string;
+  value?: string;
+  isCustom?: boolean;
 }

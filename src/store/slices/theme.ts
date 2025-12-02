@@ -27,6 +27,8 @@ const themeSlice = createSlice({
 
 export const { setThemeMode, setThemeBackgroundOption } = themeSlice.actions;
 
+export const themeInitialState = initialState;
+
 export const themeManager = (state: { theme: ThemeState }) => state.theme;
 
 export default themeSlice.reducer;

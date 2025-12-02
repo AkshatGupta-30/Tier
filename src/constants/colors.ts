@@ -1,5 +1,11 @@
 import type { BackgroundOption } from '@ts/theme';
 
+export const UPLOAD_IMAGE_BUTTON: BackgroundOption = {
+  id: 'upload-image-button',
+  classes: 'bg-gray-500',
+  type: 'button',
+};
+
 export const LIGHT_BACKGROUND_OPTIONS: BackgroundOption[] = [
   // --- LIGHT THEME: SOLIDS ---
   {

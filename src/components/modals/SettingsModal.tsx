@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { IoMdClose } from 'react-icons/io';
 
+import BackgroundImages from '@components/BackgroundImages';
 import CustomBackground from '@components/CustomBackground';
 import SwitchTheme from '@components/SwitchTheme';
 import useTheme from '@hooks/useTheme';
@@ -32,7 +33,7 @@ const SettingsHeader = () => {
 
 const SettingsSection = ({ title, component }: SettingsSectionProps) => {
   return (
-    <section className="flex flex-col gap-3">
+    <section className="flex flex-col">
       <label className="px-10 text-base font-bold text-black dark:text-white">{title}</label>
       {component}
     </section>
@@ -43,16 +44,20 @@ const SettingsModal = () => {
   const { backgroundColor } = useTheme();
   return (
     <div
-      className={`relative flex max-h-full flex-1 flex-col overflow-hidden rounded-xl ${backgroundColor.classes}`}
+      className={`relative flex max-h-full flex-1 flex-col overflow-hidden rounded-xl ${backgroundColor?.classes}`}
     >
       <SettingsHeader />
       <div className={'scrollbar-hidden flex flex-1 flex-col gap-8 overflow-y-auto py-5'}>
         <SettingsSection
-          title="Theme"
+          title="Theme Mode"
           component={<SwitchTheme />}
         />
         <SettingsSection
-          title="Background"
+          title="Background Image"
+          component={<BackgroundImages />}
+        />
+        <SettingsSection
+          title="Theme Color"
           component={<CustomBackground />}
         />
       </div>

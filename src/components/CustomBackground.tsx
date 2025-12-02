@@ -9,7 +9,7 @@ interface BackgroundCardsProps {
   index: number;
 }
 
-const BackgroundCards = ({ isSelected, background, index }: BackgroundCardsProps) => {
+const BackgroundColorCards = ({ isSelected, background, index }: BackgroundCardsProps) => {
   const { label, classes } = background || {};
   const { switchBackgroundOption } = useTheme();
 
@@ -34,15 +34,16 @@ const CustomBackground = () => {
 
   return (
     <List
-      className="scrollbar-hidden flex flex-row justify-start gap-2 px-10"
+      className="scrollbar-hidden mt-3 flex flex-row justify-start gap-2 px-10"
       rowCount={BACKGROUND_OPTIONS?.length || 0}
       rowHeight={6}
       rowProps={{ backgrounds: BACKGROUND_OPTIONS }}
       rowComponent={({ index, backgrounds }) => {
         const background = backgrounds?.[index] || {};
         const { id } = background || {};
+
         return (
-          <BackgroundCards
+          <BackgroundColorCards
             key={id}
             background={background}
             isSelected={index === backgroundOptionIndex}

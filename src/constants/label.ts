@@ -19,6 +19,7 @@ export const LABELS = {
   CREATE_FOLDER: 'Create Folder',
   UPDATE_BOOKMARK: 'Update Bookmark',
   UPDATE_FOLDER: 'Update Folder',
+  UPLOAD_IMAGE: 'Upload Image',
 };
 
 export const PLACEHOLDERS = {
