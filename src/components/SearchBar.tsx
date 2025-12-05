@@ -1,18 +1,25 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react';
-import { FcGoogle } from 'react-icons/fc';
 
+import { useAppSelector } from '@store';
 import { PLACEHOLDERS } from '@constants/label';
 import useBookmarks from '@hooks/useBookmarks';
-import { getGoogleSearchUrl } from '@utils';
+import { getSearchUrl } from '@utils';
+import { SEARCH_ENGINES } from '@constants/search';
+import { fetchSuggestions } from '@utils/suggestions';
 
 type SearchSuggestion =
   | (chrome.bookmarks.BookmarkTreeNode & { type: 'bookmark' })
-  | { type: 'google'; title: string };
+  | { type: 'search'; title: string };
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  
+  const selectedEngine = useAppSelector((state) => state.search.selectedEngine);
+  const SearchIcon = SEARCH_ENGINES[selectedEngine].ICON;
+  const { NAME: engineName } = SEARCH_ENGINES[selectedEngine];
+
   const { searchBookmarks } = useBookmarks();
   const [navigateTo, setNavigateTo] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -40,20 +47,7 @@ const SearchBar = () => {
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      setNavigateTo(getGoogleSearchUrl(query));
-    }
-  };
-
-  const fetchGoogleSuggestions = async (searchQuery: string): Promise<string[]> => {
-    try {
-      const response = await fetch(
-        `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(searchQuery)}`,
-      );
-      const data = await response.json();
-      return data[1] || [];
-    } catch (error) {
-      console.error('Error fetching Google suggestions:', error);
-      return [];
+      setNavigateTo(getSearchUrl(query, selectedEngine));
     }
   };
 
@@ -63,11 +57,11 @@ const SearchBar = () => {
 
     if (value.trim().length > 0) {
       const bookmarkResults = await searchBookmarks(value);
-      const googleResults = await fetchGoogleSuggestions(value);
+      const searchResults = await fetchSuggestions(value, selectedEngine);
 
       const combinedSuggestions: SearchSuggestion[] = [
         ...bookmarkResults.slice(0, 20).map((b) => ({ ...b, type: 'bookmark' as const })),
-        ...googleResults.slice(0, 6).map((s) => ({ type: 'google' as const, title: s })),
+        ...searchResults.slice(0, 6).map((s) => ({ type: 'search' as const, title: s })),
       ];
 
       setSuggestions(combinedSuggestions); // Limit handled previously
@@ -84,7 +78,7 @@ const SearchBar = () => {
         setNavigateTo(suggestion.url);
       }
     } else {
-      setNavigateTo(getGoogleSearchUrl(suggestion.title));
+      setNavigateTo(getSearchUrl(suggestion.title, selectedEngine));
     }
     setShowSuggestions(false);
   };
@@ -97,7 +91,7 @@ const SearchBar = () => {
       >
         <div className="group relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-1 flex items-center pl-4">
-            <FcGoogle className="text-2xl" />
+            <img src={SearchIcon} alt={engineName} className="h-6 w-6" />
           </div>
           <input
             type="text"
@@ -135,17 +129,17 @@ const SearchBar = () => {
               </div>
             )}
 
-            {/* Google Suggestions Section - Vertical */}
+            {/* Search Suggestions Section - Vertical */}
             <ul className="flex flex-col py-1">
               {suggestions
-                .filter((s) => s.type === 'google')
+                .filter((s) => s.type === 'search')
                 .map((suggestion, index) => (
                   <li
-                    key={`google-${index}`}
+                    key={`search-${index}`}
                     onClick={() => handleSuggestionClick(suggestion)}
                     className="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-white transition-colors hover:bg-white/10"
                   >
-                    <FcGoogle className="text-lg" />
+                    <img src={SearchIcon} alt={engineName} className="h-4 w-4" />
                     <span className="truncate text-sm font-medium">{suggestion.title}</span>
                   </li>
                 ))}

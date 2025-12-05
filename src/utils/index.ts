@@ -1,3 +1,4 @@
+import { SEARCH_ENGINES, type SearchEngineKey } from '@constants/search';
 import { URLS } from '@constants';
 
 export const truncateText = (text: string, maxLength: number = 16) => {
@@ -18,10 +19,11 @@ export const getFaviconUrl = (url: string) => {
   return faviconUrl.toString();
 };
 
-export const getGoogleSearchUrl = (query: string) => {
-  const googleUrl = new URL(URLS.GOOGLE);
-  googleUrl.searchParams.append('q', query);
-  return googleUrl.toString();
+export const getSearchUrl = (query: string, engine: SearchEngineKey) => {
+  const searchEngine = SEARCH_ENGINES[engine];
+  const searchUrl = new URL(searchEngine.URL);
+  searchUrl.searchParams.append(searchEngine.QUERY_PARAM, query);
+  return searchUrl.toString();
 };
 
 export const debounce = (callback: () => void, delay: number) => {

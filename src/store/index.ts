@@ -2,14 +2,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import bookmarkReducer from './slices/bookmark';
-import modalReducer from './slices/modals';
+import modalsReducer from './slices/modals';
+import searchReducer from './slices/search';
 import themeReducer from './slices/theme';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     bookmark: bookmarkReducer,
-    modal: modalReducer,
+    modal: modalsReducer,
     theme: themeReducer,
+    search: searchReducer,
   },
 });
 

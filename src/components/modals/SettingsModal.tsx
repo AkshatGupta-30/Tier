@@ -3,6 +3,7 @@ import { IoMdClose } from 'react-icons/io';
 
 import BackgroundImages from '@components/BackgroundImages';
 import CustomBackground from '@components/CustomBackground';
+import SearchEngineSelector from '@components/SearchEngineSelector';
 import SwitchTheme from '@components/SwitchTheme';
 import useTheme from '@hooks/useTheme';
 
@@ -59,6 +60,10 @@ const SettingsModal = () => {
         <SettingsSection
           title="Theme Color"
           component={<CustomBackground />}
+        />
+        <SettingsSection
+          title="Search Engine"
+          component={<SearchEngineSelector />}
         />
       </div>
     </div>
