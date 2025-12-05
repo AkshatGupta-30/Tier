@@ -30,13 +30,15 @@ const ThemeMode = ({ isSelected, theme, onClick }: ThemeModeProps) => {
   const { background, label, color } = THEMES[theme];
   return (
     <div
-      className={`relative flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
-        isSelected ? 'border-black dark:border-white' : 'border-transparent'
+      className={`relative flex h-24 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
+        isSelected
+          ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400 dark:ring-blue-400/20'
+          : 'border-transparent hover:border-black/10 dark:hover:border-white/10'
       }`}
       onClick={onClick}
     >
-      <div className={`flex h-30 w-60 items-center justify-center rounded-lg ${background}`}>
-        <p className={`text-center text-4xl font-extrabold ${color}`}>{label}</p>
+      <div className={`flex h-24 w-full items-center justify-center rounded-lg ${background}`}>
+        <p className={`text-center text-lg font-extrabold ${color}`}>{label}</p>
       </div>
     </div>
   );
@@ -46,7 +48,7 @@ const SwitchTheme = () => {
   const { isLightMode, switchTheme } = useTheme();
 
   return (
-    <div className="mt-3 flex flex-row items-center gap-5 px-10">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5">
       <ThemeMode
         theme={ThemeModeEnum.LIGHT}
         isSelected={isLightMode}

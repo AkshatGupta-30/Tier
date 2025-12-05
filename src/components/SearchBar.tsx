@@ -25,7 +25,7 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={handleSearch}
-      className="w-full max-w-2xl"
+      className="w-full"
     >
       <div className="group relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-1 flex items-center pl-4">

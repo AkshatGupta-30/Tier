@@ -14,14 +14,7 @@ const NewTab = () => {
       onContextMenu={handleEmptySpaceContextMenu}
     >
       <Header />
-      {/* Content */}
-      <main className="animate-fade-in scrollbar-hidden z-10 flex w-full flex-1 flex-col items-center gap-5 overflow-y-auto p-10 pt-5">
-        {/* <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-purple-400 mb-2">
-            Good Evening
-          </h1>
-          <p className="text-gray-400">What would you like to discover today?</p>
-        </div> */}
+      <main className="animate-fade-in scrollbar-hidden z-10 flex w-full flex-1 flex-col items-center gap-8 overflow-y-auto p-10 pt-10">
         <BreadCrumb />
         <BookmarkSection bookmarks={bookmarks ?? []} />
       </main>

@@ -1,5 +1,3 @@
-import { List } from 'react-window';
-
 import useTheme from '@hooks/useTheme';
 import type { BackgroundOption } from '@ts/theme';
 
@@ -14,18 +12,18 @@ const BackgroundColorCards = ({ isSelected, background, index }: BackgroundCards
   const { switchBackgroundOption } = useTheme();
 
   return (
-    <div
-      className={`relative flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
-        isSelected ? 'border-black dark:border-white' : 'border-transparent'
-      }`}
+    <button
+      className={`group relative flex h-24 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 transition-all duration-300 ${
+        isSelected
+          ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400 dark:ring-blue-400/20'
+          : 'border-transparent hover:border-black/10 dark:hover:border-white/10'
+      } ${classes}`}
+      onClick={() => switchBackgroundOption(index)}
     >
-      <button
-        className={`flex h-30 w-50 items-center justify-center rounded-lg group-hover:cursor-pointer ${classes}`}
-        onClick={() => switchBackgroundOption(index)}
-      >
-        <p className={'text-center text-xl font-extrabold text-black dark:text-white'}>{label}</p>
-      </button>
-    </div>
+      <span className="z-10 text-lg font-bold text-black/80 transition-transform duration-300 group-hover:scale-110 dark:text-white/80">
+        {label}
+      </span>
+    </button>
   );
 };
 
@@ -33,25 +31,16 @@ const CustomBackground = () => {
   const { backgroundOptionIndex, BACKGROUND_OPTIONS } = useTheme();
 
   return (
-    <List
-      className="scrollbar-hidden mt-3 flex flex-row justify-start gap-2 px-10"
-      rowCount={BACKGROUND_OPTIONS?.length || 0}
-      rowHeight={6}
-      rowProps={{ backgrounds: BACKGROUND_OPTIONS }}
-      rowComponent={({ index, backgrounds }) => {
-        const background = backgrounds?.[index] || {};
-        const { id } = background || {};
-
-        return (
-          <BackgroundColorCards
-            key={id}
-            background={background}
-            isSelected={index === backgroundOptionIndex}
-            index={index}
-          />
-        );
-      }}
-    />
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5">
+      {BACKGROUND_OPTIONS?.map((background, index) => (
+        <BackgroundColorCards
+          key={background.id || index}
+          background={background}
+          isSelected={index === backgroundOptionIndex}
+          index={index}
+        />
+      ))}
+    </div>
   );
 };
 

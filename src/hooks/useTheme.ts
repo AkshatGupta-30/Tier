@@ -113,7 +113,6 @@ const useTheme = () => {
     (id: string | null) => {
       setLocalStorage(LocalStorageKeys.SELECTED_BACKGROUND_IMAGE_ID, id);
       updateDomBackground(backgroundColor, backgroundColor);
-      // Force reload to update state for now
       window.location.reload();
     },
     [backgroundColor, backgroundImage, customBackgrounds, setLocalStorage, updateDomBackground],
