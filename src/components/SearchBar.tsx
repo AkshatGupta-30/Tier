@@ -1,46 +1,145 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 import { PLACEHOLDERS } from '@constants/label';
 import useBookmarks from '@hooks/useBookmarks';
 import { getGoogleSearchUrl } from '@utils';
 
+type SearchSuggestion =
+  | (chrome.bookmarks.BookmarkTreeNode & { type: 'bookmark' })
+  | { type: 'google'; title: string };
+
 const SearchBar = () => {
   const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const { searchBookmarks } = useBookmarks();
+  const [navigateTo, setNavigateTo] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (navigateTo) {
+      window.location.href = navigateTo;
+      setNavigateTo(null);
+    }
+  }, [navigateTo]);
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      window.location.href = getGoogleSearchUrl(query);
+      setNavigateTo(getGoogleSearchUrl(query));
     }
   };
 
-  const handleChange = (e: FormEvent<HTMLInputElement>) => {
+  const fetchGoogleSuggestions = async (searchQuery: string): Promise<string[]> => {
+    try {
+      const response = await fetch(
+        `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(searchQuery)}`,
+      );
+      const data = await response.json();
+      return data[1] || [];
+    } catch (error) {
+      console.error('Error fetching Google suggestions:', error);
+      return [];
+    }
+  };
+
+  const handleChange = async (e: FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
     setQuery(value);
-    searchBookmarks(value);
+
+    if (value.trim().length > 0) {
+      const bookmarkResults = await searchBookmarks(value);
+      const googleResults = await fetchGoogleSuggestions(value);
+
+      const combinedSuggestions: SearchSuggestion[] = [
+        ...bookmarkResults.slice(0, 20).map((b) => ({ ...b, type: 'bookmark' as const })),
+        ...googleResults.slice(0, 6).map((s) => ({ type: 'google' as const, title: s })),
+      ];
+
+      setSuggestions(combinedSuggestions); // Limit handled previously
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: SearchSuggestion) => {
+    if (suggestion.type === 'bookmark') {
+      if (suggestion.url) {
+        setNavigateTo(suggestion.url);
+      }
+    } else {
+      setNavigateTo(getGoogleSearchUrl(suggestion.title));
+    }
+    setShowSuggestions(false);
   };
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="w-full"
-    >
-      <div className="group relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-1 flex items-center pl-4">
-          <FcGoogle className="text-2xl" />
+    <div className="relative w-full">
+      <form
+        onSubmit={handleSearch}
+        className="w-full"
+      >
+        <div className="group relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-1 flex items-center pl-4">
+            <FcGoogle className="text-2xl" />
+          </div>
+          <input
+            type="text"
+            value={query}
+            onChange={handleChange}
+            onFocus={() => query.trim().length > 0 && setShowSuggestions(true)}
+            className={`block w-full rounded-2xl border border-white/20 bg-white/10 py-3 pr-4 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-white/20 focus:ring-2 focus:ring-blue-500/50 focus:outline-none ${
+              showSuggestions && suggestions.length > 0 ? 'rounded-b-none' : ''
+            }`}
+            placeholder={PLACEHOLDERS.SEARCH}
+            autoFocus
+          />
         </div>
-        <input
-          type="text"
-          value={query}
-          onChange={handleChange}
-          className="block w-full rounded-full border border-white/20 bg-white/10 py-3 pr-4 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-white/20 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-          placeholder={PLACEHOLDERS.SEARCH}
-          autoFocus
-        />
-      </div>
-    </form>
+      </form>
+
+      {showSuggestions && suggestions.length > 0 && (
+        <div className="absolute top-full left-0 z-50 w-full overflow-hidden rounded-b-2xl border-t border-white/10 bg-black/90 shadow-2xl backdrop-blur-xl">
+          <div className="flex flex-col">
+            {/* Bookmarks Section - Horizontal */}
+            {suggestions.some((s) => s.type === 'bookmark') && (
+              <div className="flex w-full flex-row gap-2 overflow-hidden border-b border-white/10 p-2">
+                {suggestions
+                  .filter((s) => s.type === 'bookmark')
+                  .map((suggestion, index) => (
+                    <div
+                      key={`bookmark-${index}`}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="flex max-w-[150px] shrink-0 cursor-pointer items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-white transition-colors hover:bg-white/10"
+                      title={suggestion.title}
+                    >
+                      <span className="shrink-0 text-base">⭐</span>
+                      <span className="truncate text-xs font-medium">{suggestion.title}</span>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {/* Google Suggestions Section - Vertical */}
+            <ul className="flex flex-col py-1">
+              {suggestions
+                .filter((s) => s.type === 'google')
+                .map((suggestion, index) => (
+                  <li
+                    key={`google-${index}`}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-white transition-colors hover:bg-white/10"
+                  >
+                    <FcGoogle className="text-lg" />
+                    <span className="truncate text-sm font-medium">{suggestion.title}</span>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
