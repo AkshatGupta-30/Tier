@@ -104,7 +104,7 @@ const SearchBar = () => {
             value={query}
             onChange={handleChange}
             onFocus={() => query.trim().length > 0 && setShowSuggestions(true)}
-            className={`block w-full rounded-2xl border border-white/20 bg-white/10 py-3 pr-4 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-white/20 focus:ring-2 focus:ring-blue-500/50 focus:outline-none ${
+            className={`block w-full rounded-2xl border border-white/20 bg-white/10 py-3 pr-4 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-black/95 focus:ring-2 focus:ring-blue-500/50 focus:outline-none ${
               showSuggestions && suggestions.length > 0 ? 'rounded-b-none' : ''
             }`}
             placeholder={PLACEHOLDERS.SEARCH}
@@ -114,11 +114,11 @@ const SearchBar = () => {
       </form>
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute top-full left-0 z-50 w-full overflow-hidden rounded-b-2xl border-t border-white/10 bg-black/90 shadow-2xl backdrop-blur-xl">
+        <div className="absolute top-full left-0 z-50 w-full overflow-hidden rounded-b-2xl border-t border-white/10 bg-black/95 shadow-2xl backdrop-blur-xl">
           <div className="flex flex-col">
             {/* Bookmarks Section - Horizontal */}
             {suggestions.some((s) => s.type === 'bookmark') && (
-              <div className="flex w-full flex-row gap-2 overflow-hidden border-b border-white/10 p-2">
+              <div className="flex w-full flex-row flex-wrap gap-2 border-b border-white/10 p-2 max-h-[104px] overflow-hidden">
                 {suggestions
                   .filter((s) => s.type === 'bookmark')
                   .map((suggestion, index) => (
