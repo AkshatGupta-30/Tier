@@ -27,7 +27,11 @@ const SearchEngineSelector = () => {
                 : 'border-transparent bg-gray-50 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10'
             }`}
           >
-            <img src={Icon} alt={engine.NAME} className="h-8 w-8" />
+            <img
+              src={Icon}
+              alt={engine.NAME}
+              className="h-8 w-8"
+            />
             <span
               className={`text-sm font-medium ${
                 isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'

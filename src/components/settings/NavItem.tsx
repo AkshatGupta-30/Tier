@@ -8,7 +8,13 @@ interface NavItemProps<T> {
   onSelect: (id: T) => void;
 }
 
-const NavItem = <T,>({ id, label, icon: Icon, isActive, onSelect }: NavItemProps<T>): ReactElement => (
+const NavItem = <T,>({
+  id,
+  label,
+  icon: Icon,
+  isActive,
+  onSelect,
+}: NavItemProps<T>): ReactElement => (
   <button
     onClick={() => onSelect(id)}
     className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${

@@ -7,7 +7,7 @@ import SwitchTheme from '@components/SwitchTheme';
 
 const AppearanceSettings = () => {
   return (
-    <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300">
+    <div className="animate-in fade-in slide-in-from-right-4 flex flex-col gap-8 duration-300">
       <SettingsSection
         title="Theme Mode"
         component={<SwitchTheme />}

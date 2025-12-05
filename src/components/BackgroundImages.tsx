@@ -95,7 +95,7 @@ const NoneOptionCard = ({ isSelected }: { isSelected: boolean }) => {
       }`}
     >
       <button
-        className={`flex h-30  w-full items-center justify-center rounded-lg bg-gray-200 group-hover:cursor-pointer dark:bg-gray-800`}
+        className={`flex h-30 w-full items-center justify-center rounded-lg bg-gray-200 group-hover:cursor-pointer dark:bg-gray-800`}
         onClick={() => selectBackgroundImage(null)}
       >
         <p className="text-center text-lg font-extrabold text-gray-500 dark:text-gray-400">None</p>

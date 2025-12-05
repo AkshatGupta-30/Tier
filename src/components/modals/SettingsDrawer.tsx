@@ -17,7 +17,7 @@ interface SettingsSectionProps {
 const SettingsSection = ({ title, component }: SettingsSectionProps) => {
   return (
     <section className="flex w-full flex-col gap-3">
-      <label className="text-sm font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+      <label className="text-sm font-bold tracking-wide text-gray-500 uppercase dark:text-gray-400">
         {title}
       </label>
       {component}
@@ -52,18 +52,27 @@ const SettingsDrawer = () => {
   );
 
   return (
-    <div className={`flex h-full w-full flex-row overflow-hidden bg-white dark:bg-zinc-900 ${backgroundColor?.classes}`}>
+    <div
+      className={`flex h-full w-full flex-row overflow-hidden bg-white dark:bg-zinc-900 ${backgroundColor?.classes}`}
+    >
       <aside className="flex w-48 shrink-0 flex-col gap-2 border-r border-gray-100 bg-gray-50/50 p-4 dark:border-white/10 dark:bg-black/20">
-        <NavItem id="general" label="General" icon={IoMdSettings} />
-        <NavItem id="appearance" label="Appearance" icon={IoMdColorPalette} />
+        <NavItem
+          id="general"
+          label="General"
+          icon={IoMdSettings}
+        />
+        <NavItem
+          id="appearance"
+          label="Appearance"
+          icon={IoMdColorPalette}
+        />
       </aside>
 
       {/* Content */}
-      <div className="flex-1 w-full scrollbar-hidden overflow-y-auto p-8 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
+      <div className="scrollbar-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 w-full flex-1 overflow-y-auto p-8">
         <div className="flex w-full flex-col gap-10">
           {activeTab === 'general' && (
-            <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300">
-             
+            <div className="animate-in fade-in slide-in-from-right-4 flex flex-col gap-8 duration-300">
               <SettingsSection
                 title="Search Engine"
                 component={<SearchEngineSelector />}
@@ -72,7 +81,7 @@ const SettingsDrawer = () => {
           )}
 
           {activeTab === 'appearance' && (
-             <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300">
+            <div className="animate-in fade-in slide-in-from-right-4 flex flex-col gap-8 duration-300">
               <SettingsSection
                 title="Theme Mode"
                 component={<SwitchTheme />}

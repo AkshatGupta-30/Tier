@@ -15,7 +15,7 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  
+
   const selectedEngine = useAppSelector((state) => state.search.selectedEngine);
   const SearchIcon = SEARCH_ENGINES[selectedEngine].ICON;
   const { NAME: engineName } = SEARCH_ENGINES[selectedEngine];
@@ -84,14 +84,21 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="relative w-full" ref={searchRef}>
+    <div
+      className="relative w-full"
+      ref={searchRef}
+    >
       <form
         onSubmit={handleSearch}
         className="w-full"
       >
         <div className="group relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-1 flex items-center pl-4">
-            <img src={SearchIcon} alt={engineName} className="h-6 w-6" />
+            <img
+              src={SearchIcon}
+              alt={engineName}
+              className="h-6 w-6"
+            />
           </div>
           <input
             type="text"
@@ -112,7 +119,7 @@ const SearchBar = () => {
           <div className="flex flex-col">
             {/* Bookmarks Section - Horizontal */}
             {suggestions.some((s) => s.type === 'bookmark') && (
-              <div className="flex w-full flex-row flex-wrap gap-2 border-b border-white/10 p-2 max-h-[104px] overflow-hidden">
+              <div className="flex max-h-[104px] w-full flex-row flex-wrap gap-2 overflow-hidden border-b border-white/10 p-2">
                 {suggestions
                   .filter((s) => s.type === 'bookmark')
                   .map((suggestion, index) => (
@@ -139,7 +146,11 @@ const SearchBar = () => {
                     onClick={() => handleSuggestionClick(suggestion)}
                     className="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-white transition-colors hover:bg-white/10"
                   >
-                    <img src={SearchIcon} alt={engineName} className="h-4 w-4" />
+                    <img
+                      src={SearchIcon}
+                      alt={engineName}
+                      className="h-4 w-4"
+                    />
                     <span className="truncate text-sm font-medium">{suggestion.title}</span>
                   </li>
                 ))}
