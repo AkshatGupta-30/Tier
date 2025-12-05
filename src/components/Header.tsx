@@ -22,9 +22,7 @@ const Header = () => {
       <div className="flex w-30 items-center justify-end pr-2">
         <MdSettings
           className="aspect-square size-8 transform cursor-pointer text-black/70 transition-all duration-300 ease-in-out hover:scale-110 hover:rotate-90 hover:text-black dark:text-white/70 dark:hover:text-white"
-          onClick={() =>
-            Modal.open({ openModalType: MODAL_TYPES.SETTINGS, childrenProps: undefined })
-          }
+          onClick={() => Modal.open({ openModalType: MODAL_TYPES.SETTINGS })}
         />
       </div>
     </header>

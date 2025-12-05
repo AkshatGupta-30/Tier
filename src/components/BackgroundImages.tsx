@@ -25,7 +25,7 @@ const UploadImageButton = () => {
 
   return (
     <div
-      className={`relative flex h-24 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-transparent p-1 transition-all duration-300`}
+      className={`relative flex h-30 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-transparent p-1 transition-all duration-300`}
     >
       <button
         className={`relative flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg ${UPLOAD_IMAGE_BUTTON.classes}`}
@@ -59,7 +59,7 @@ const BackgroundImageCard = ({
 
   return (
     <div
-      className={`relative flex h-24 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
+      className={`relative flex h-30 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
         isSelected
           ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400 dark:ring-blue-400/20'
           : 'border-transparent hover:border-black/10 dark:hover:border-white/10'
@@ -88,14 +88,14 @@ const NoneOptionCard = ({ isSelected }: { isSelected: boolean }) => {
 
   return (
     <div
-      className={`relative flex h-24 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
+      className={`relative flex h-30 w-full cursor-pointer flex-col items-center gap-2 rounded-lg border-2 p-1 transition-all duration-300 ${
         isSelected
           ? 'border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-400 dark:ring-blue-400/20'
           : 'border-transparent hover:border-black/10 dark:hover:border-white/10'
       }`}
     >
       <button
-        className={`flex h-24 w-full items-center justify-center rounded-lg bg-gray-200 group-hover:cursor-pointer dark:bg-gray-800`}
+        className={`flex h-30  w-full items-center justify-center rounded-lg bg-gray-200 group-hover:cursor-pointer dark:bg-gray-800`}
         onClick={() => selectBackgroundImage(null)}
       >
         <p className="text-center text-lg font-extrabold text-gray-500 dark:text-gray-400">None</p>
@@ -114,7 +114,7 @@ const BackgroundImages = () => {
   ];
 
   return (
-    <div className="scrollbar-hidden grid grid-cols-2 gap-4 overflow-y-visible! sm:grid-cols-4 md:grid-cols-5">
+    <div className="scrollbar-hidden grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4 overflow-y-visible!">
       {items.map((item) => {
         if (item.type === 'button') return <UploadImageButton key={item.id} />;
         if (item.type === 'none')

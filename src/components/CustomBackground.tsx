@@ -31,7 +31,7 @@ const CustomBackground = () => {
   const { backgroundOptionIndex, BACKGROUND_OPTIONS } = useTheme();
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5">
+    <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
       {BACKGROUND_OPTIONS?.map((background, index) => (
         <BackgroundColorCards
           key={background.id || index}

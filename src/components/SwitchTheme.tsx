@@ -48,7 +48,7 @@ const SwitchTheme = () => {
   const { isLightMode, switchTheme } = useTheme();
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4">
       <ThemeMode
         theme={ThemeModeEnum.LIGHT}
         isSelected={isLightMode}

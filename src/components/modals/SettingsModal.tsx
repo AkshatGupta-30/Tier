@@ -1,71 +1,69 @@
-import type { ReactNode } from 'react';
-import { IoMdClose } from 'react-icons/io';
+import { useState } from 'react';
+import { IoMdColorPalette, IoMdSettings } from 'react-icons/io';
 
 import BackgroundImages from '@components/BackgroundImages';
 import CustomBackground from '@components/CustomBackground';
 import SearchEngineSelector from '@components/SearchEngineSelector';
+import NavItem from '@components/settings/NavItem';
+import SettingsHeader from '@components/settings/SettingsHeader';
+import SettingsSection from '@components/settings/SettingsSection';
 import SwitchTheme from '@components/SwitchTheme';
+import { SettingsTabEnum } from '@constants/settings';
 import useTheme from '@hooks/useTheme';
-
-import Modal from '.';
-
-interface SettingsSectionProps {
-  title: string;
-  component: ReactNode;
-}
-
-const SettingsHeader = () => {
-  return (
-    <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/80 px-6 py-4 backdrop-blur-md dark:border-white/10 dark:bg-zinc-900/80">
-      <div className="flex w-full flex-row items-center justify-between gap-4">
-        <div className="flex flex-row items-center gap-2">
-          <p className="text-2xl font-bold text-black dark:text-white">Settings</p>
-        </div>
-        <button
-          className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-white/10"
-          onClick={() => Modal.close()}
-        >
-          <IoMdClose className="text-xl text-black dark:text-white" />
-        </button>
-      </div>
-    </header>
-  );
-};
-
-const SettingsSection = ({ title, component }: SettingsSectionProps) => {
-  return (
-    <section className="flex flex-col gap-3">
-      <label className="text-lg font-bold text-gray-900 dark:text-gray-100">{title}</label>
-      {component}
-    </section>
-  );
-};
 
 const SettingsModal = () => {
   const { backgroundColor } = useTheme();
+  const [activeTab, setActiveTab] = useState<SettingsTabEnum>(SettingsTabEnum.GENERAL);
   return (
-    <div
-      className={`relative flex max-h-[85vh] w-full flex-1 flex-col overflow-hidden rounded-2xl border-transparent shadow-2xl hover:border-black/10 dark:hover:border-white/10 ${backgroundColor?.classes}`}
-    >
+    <div className={`flex h-full w-full flex-col rounded-2xl overflow-hidden ${backgroundColor?.classes}`}>
       <SettingsHeader />
-      <div className={'scrollbar-hidden flex flex-1 flex-col gap-10 overflow-y-auto p-8'}>
-        <SettingsSection
-          title="Theme Mode"
-          component={<SwitchTheme />}
+    <div className="flex flex-1 w-full flex-row overflow-hidden">
+      <aside className="flex w-48 shrink-0 flex-col gap-2 border-r border-gray-100 bg-gray-50/50 p-4 dark:border-white/10 dark:bg-black/20">
+        <NavItem
+          label="General"
+          icon={IoMdSettings}
+          isActive={activeTab === SettingsTabEnum.GENERAL}
+          onClick={() => setActiveTab(SettingsTabEnum.GENERAL)}
         />
-        <SettingsSection
-          title="Background Image"
-          component={<BackgroundImages />}
+        <NavItem
+          label="Appearance"
+          icon={IoMdColorPalette}
+          isActive={activeTab === SettingsTabEnum.APPEARANCE}
+          onClick={() => setActiveTab(SettingsTabEnum.APPEARANCE)}
         />
-        <SettingsSection
-          title="Theme Color"
-          component={<CustomBackground />}
-        />
-        <SettingsSection
-          title="Search Engine"
-          component={<SearchEngineSelector />}
-        />
+      </aside>
+
+      {/* Content */}
+      <div className="flex-1 w-full scrollbar-hidden overflow-y-auto p-8 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
+        <div className="flex flex-1 flex-col gap-10">
+          {activeTab === SettingsTabEnum.GENERAL && (
+            <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300">
+              <SettingsSection
+                title="Search Engine"
+                component={<SearchEngineSelector />}
+              />
+            </div>
+          )}
+
+          {activeTab === SettingsTabEnum.APPEARANCE && (
+            <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300">
+              <SettingsSection
+                title="Theme Mode"
+                component={<SwitchTheme />}
+              />
+              <SettingsSection
+                title="Wallpaper"
+                component={<BackgroundImages />}
+              />
+              <SettingsSection
+                title="Accent Color"
+                component={<CustomBackground />}
+              />
+            </div>
+          )}
+        </div>
       </div>
+    </div>
     </div>
   );
 };
