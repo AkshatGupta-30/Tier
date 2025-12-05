@@ -1,5 +1,5 @@
+import { memo } from 'react';
 import { IoMdClose } from 'react-icons/io';
-
 import Modal from '@components/modals';
 
 const SettingsHeader = () => {
@@ -20,4 +20,4 @@ const SettingsHeader = () => {
   );
 };
 
-export default SettingsHeader;
+export default memo(SettingsHeader);

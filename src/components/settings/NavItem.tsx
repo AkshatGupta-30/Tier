@@ -1,15 +1,16 @@
-import type { ReactElement } from 'react';
+import { memo, type ReactElement } from 'react';
 
-interface NavItemProps {
+interface NavItemProps<T> {
+  id: T;
   label: string;
   icon: React.ElementType;
   isActive: boolean;
-  onClick: () => void;
+  onSelect: (id: T) => void;
 }
 
-const NavItem = ({ label, icon: Icon, isActive, onClick }: NavItemProps): ReactElement => (
+const NavItem = <T,>({ id, label, icon: Icon, isActive, onSelect }: NavItemProps<T>): ReactElement => (
   <button
-    onClick={onClick}
+    onClick={() => onSelect(id)}
     className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${
       isActive
         ? 'bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400'
@@ -21,4 +22,4 @@ const NavItem = ({ label, icon: Icon, isActive, onClick }: NavItemProps): ReactE
   </button>
 );
 
-export default NavItem;
+export default memo(NavItem) as typeof NavItem;

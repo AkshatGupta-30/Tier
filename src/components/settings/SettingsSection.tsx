@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 
 interface SettingsSectionProps {
   title: string;
@@ -14,4 +14,4 @@ const SettingsSection = ({ title, component }: SettingsSectionProps) => {
   );
 };
 
-export default SettingsSection;
+export default memo(SettingsSection);
