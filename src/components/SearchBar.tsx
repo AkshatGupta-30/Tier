@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
 import { PLACEHOLDERS } from '@constants/label';
@@ -15,6 +15,20 @@ const SearchBar = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { searchBookmarks } = useBookmarks();
   const [navigateTo, setNavigateTo] = useState<string | null>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (navigateTo) {
@@ -76,7 +90,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={searchRef}>
       <form
         onSubmit={handleSearch}
         className="w-full"
