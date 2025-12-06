@@ -13,7 +13,7 @@ const TopSitesSection = () => {
   if (!topSites.length) return null;
 
   return (
-    <div className="flex max-h-48 flex-col justify-between gap-3">
+    <div className="flex max-h-48 flex-col items-center justify-between gap-3">
       <p className={`text-lg font-bold text-black/90 dark:text-white/90`}>{TOP_SITES}</p>
       <div className="flex w-full items-start justify-center gap-8 overflow-y-visible">
         {topSites.map((site) => (

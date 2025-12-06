@@ -10,7 +10,7 @@ import Modal from './modals';
 const { ADD } = LABELS;
 
 const AddBookmarkButton = () => {
-  const { breadcrumbs, bookmarkSearches } = useBookmarks();
+  const { breadcrumbs } = useBookmarks();
 
   const handleAddBookmark = (e: MouseEvent) => {
     e.preventDefault();
@@ -24,11 +24,9 @@ const AddBookmarkButton = () => {
     });
   };
 
-  if (bookmarkSearches) return null;
-
   return (
     <button
-      className="gap-auto relative flex w-full cursor-pointer flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg"
+      className="gap-auto relative flex w-full cursor-pointer flex-col items-center justify-start transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-lg"
       onClick={handleAddBookmark}
       onContextMenu={(e) => {
         e.preventDefault();

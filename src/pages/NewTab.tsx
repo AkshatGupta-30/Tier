@@ -17,10 +17,8 @@ const NewTab = () => {
     >
       <Header />
       <main className="animate-fade-in scrollbar-hidden z-10 flex w-full flex-1 flex-col items-center gap-8 overflow-y-auto p-10 pt-10">
-        <section className="flex w-full flex-row items-center gap-8">
-          <QuoteOfTheDay />
-          <TopSitesSection />
-        </section>
+        <QuoteOfTheDay />
+        <TopSitesSection />
         <BreadCrumb />
         <BookmarkSection bookmarks={bookmarks ?? []} />
       </main>
