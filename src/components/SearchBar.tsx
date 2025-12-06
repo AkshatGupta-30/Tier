@@ -7,10 +7,14 @@ import { getSearchUrl } from '@utils';
 import { SEARCH_ENGINES } from '@constants/search';
 import { fetchSuggestions } from '@utils/suggestions';
 
+import { FaMicrophoneLines, FaArrowUp, FaMagnifyingGlass } from 'react-icons/fa6';
+
 const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [querySuggestions, setQuerySuggestions] = useState<string[]>([]);
-  const [bookmarkSuggestions, setBookmarkSuggestions] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
+  const [bookmarkSuggestions, setBookmarkSuggestions] = useState<
+    chrome.bookmarks.BookmarkTreeNode[]
+  >([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const selectedEngine = useAppSelector((state) => state.search.selectedEngine);
@@ -20,6 +24,8 @@ const SearchBar = () => {
   const { searchBookmarks } = useBookmarks();
   const [navigateTo, setNavigateTo] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -41,6 +47,82 @@ const SearchBar = () => {
     }
   }, [navigateTo]);
 
+  useEffect(() => {
+    if (query.trim().length > 0) {
+      new Promise<chrome.bookmarks.BookmarkTreeNode[]>((resolve) => {
+        resolve(searchBookmarks(query));
+      }).then((bookmarkResults) => {
+        setBookmarkSuggestions(
+          bookmarkResults.slice(0, 20).map((b) => ({ ...b, type: 'bookmark' as const })),
+        );
+        setShowSuggestions(true);
+      });
+
+      new Promise<string[]>((resolve) => {
+        resolve(fetchSuggestions(query, selectedEngine));
+      }).then((searchResults) => {
+        setQuerySuggestions(searchResults.slice(0, 6));
+        setShowSuggestions(true);
+      });
+    } else {
+      setQuerySuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [query, selectedEngine]);
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+    setIsListening(false);
+  };
+
+  const handleVoiceSearch = () => {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert('Voice search is not supported in this browser.');
+      return;
+    }
+
+    if (isListening) {
+      stopRecognition();
+      return;
+    }
+
+    setIsListening(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognitionRef.current = recognition;
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setQuery(transcript);
+      // Removed auto-navigation for voice search as per request
+      stopRecognition();
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error', event.error);
+      stopRecognition();
+    };
+
+    recognition.onend = () => {
+      stopRecognition();
+    };
+
+    try {
+      recognition.start();
+    } catch (e) {
+      console.error(e);
+      stopRecognition();
+    }
+  };
+
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
@@ -51,26 +133,6 @@ const SearchBar = () => {
   const handleChange = async (e: FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
     setQuery(value);
-
-    if (value.trim().length > 0) {
-
-      new Promise<chrome.bookmarks.BookmarkTreeNode[]>((resolve) => {
-          resolve(searchBookmarks(value));
-      }).then((bookmarkResults) => {
-        setBookmarkSuggestions(bookmarkResults.slice(0, 20).map((b) => ({ ...b, type: 'bookmark' as const })));
-        setShowSuggestions(true);
-      })
-
-      new Promise<string[]>((resolve) => {
-          resolve(fetchSuggestions(value, selectedEngine));
-      }).then((searchResults) => {
-        setQuerySuggestions(searchResults.slice(0, 6));
-        setShowSuggestions(true);
-      })
-    } else {
-      setQuerySuggestions([]);
-      setShowSuggestions(false);
-    }
   };
 
   const handleSuggestionClick = (suggestion: string, type: 'bookmark' | 'search') => {
@@ -82,6 +144,12 @@ const SearchBar = () => {
       setNavigateTo(getSearchUrl(suggestion, selectedEngine));
     }
     setShowSuggestions(false);
+  };
+
+  const handleFillQuery = (e: React.MouseEvent, suggestion: string) => {
+    e.stopPropagation();
+    setQuery(suggestion);
+    // Keep focus on input if possible, or just update the query
   };
 
   return (
@@ -106,12 +174,33 @@ const SearchBar = () => {
             value={query}
             onChange={handleChange}
             onFocus={() => query.trim().length > 0 && setShowSuggestions(true)}
-            className={`block w-full rounded-2xl border border-white/20 bg-white/10 py-3 pr-4 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-black/95 focus:ring-2 focus:ring-blue-500/50 focus:outline-none ${
+
+            className={`block w-full rounded-2xl border border-white/20 bg-white/10 py-3 pr-24 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-black/95 focus:ring-2 focus:ring-blue-500/50 focus:outline-none ${
               showSuggestions && querySuggestions.length > 0 ? 'rounded-b-none' : ''
             }`}
             placeholder={PLACEHOLDERS.SEARCH}
             autoFocus
           />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+            <button
+              type="button"
+              onClick={handleVoiceSearch}
+              className={`flex cursor-pointer items-center p-2 transition-colors duration-200 ${
+                isListening ? 'animate-pulse text-red-500' : 'text-gray-400 hover:text-white'
+              }`}
+              title="Search by voice"
+            >
+              <FaMicrophoneLines className="h-5 w-5" />
+            </button>
+            <div className="mx-1 h-6 w-px bg-white/20"></div>
+            <button
+              type="submit"
+              className="flex cursor-pointer items-center p-2 text-gray-400 transition-colors duration-200 hover:text-white"
+              title="Search"
+            >
+              <FaMagnifyingGlass className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </form>
 
@@ -121,38 +210,43 @@ const SearchBar = () => {
             {/* Bookmarks Section - Horizontal */}
             {bookmarkSuggestions.length > 0 && (
               <div className="flex max-h-[104px] w-full flex-row flex-wrap gap-2 overflow-hidden border-b border-white/10 p-2">
-                {bookmarkSuggestions
-                  .map((suggestion, index) => (
-                    <div
-                      key={`bookmark-${index}`}
-                      onClick={() => handleSuggestionClick(suggestion.url ?? "", 'bookmark')}
-                      className="flex max-w-[150px] shrink-0 cursor-pointer items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-white transition-colors hover:bg-white/10"
-                      title={suggestion.title}
-                    >
-                      <span className="shrink-0 text-base">⭐</span>
-                      <span className="truncate text-xs font-medium">{suggestion.title}</span>
-                    </div>
-                  ))}
+                {bookmarkSuggestions.map((suggestion, index) => (
+                  <div
+                    key={`bookmark-${index}`}
+                    onClick={() => handleSuggestionClick(suggestion.url ?? '', 'bookmark')}
+                    className="flex max-w-[150px] shrink-0 cursor-pointer items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-white transition-colors hover:bg-white/10"
+                    title={suggestion.title}
+                  >
+                    <span className="shrink-0 text-base">⭐</span>
+                    <span className="truncate text-xs font-medium">{suggestion.title}</span>
+                  </div>
+                ))}
               </div>
             )}
 
             {/* Search Suggestions Section - Vertical */}
             <ul className="flex flex-col py-1">
-              {querySuggestions
-                .map((suggestion, index) => (
-                  <li
-                    key={`search-${index}`}
-                    onClick={() => handleSuggestionClick(suggestion, 'search')}
-                    className="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-white transition-colors hover:bg-white/10"
+              {querySuggestions.map((suggestion, index) => (
+                <li
+                  key={`search-${index}`}
+                  onClick={() => handleSuggestionClick(suggestion, 'search')}
+                  className="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-white transition-colors hover:bg-white/10"
+                >
+                  <img
+                    src={SearchIcon}
+                    alt={engineName}
+                    className="h-4 w-4"
+                  />
+                  <span className="flex-1 truncate text-sm font-medium">{suggestion}</span>
+                  <button
+                    onClick={(e) => handleFillQuery(e, suggestion)}
+                    className="flex h-8 w-8 items-center justify-center cursor-pointer rounded-full p-2 text-gray-400 hover:bg-white/10 hover:text-white group-hover:block"
+                    title="Fill in search"
                   >
-                    <img
-                      src={SearchIcon}
-                      alt={engineName}
-                      className="h-4 w-4"
-                    />
-                    <span className="truncate text-sm font-medium">{suggestion}</span>
-                  </li>
-                ))}
+                    <FaArrowUp className="h-3 w-3 -rotate-45" />
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
