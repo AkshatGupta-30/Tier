@@ -20,6 +20,7 @@ export const LABELS = {
   UPDATE_BOOKMARK: 'Update Bookmark',
   UPDATE_FOLDER: 'Update Folder',
   UPLOAD_IMAGE: 'Upload Image',
+  TOP_SITES: 'Top Sites',
 };
 
 export const PLACEHOLDERS = {

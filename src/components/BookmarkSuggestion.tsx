@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo } from 'react';
 
 interface BookmarkSuggestionProps {
   suggestion: chrome.bookmarks.BookmarkTreeNode;

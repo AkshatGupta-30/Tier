@@ -8,8 +8,8 @@ interface Quote {
 
 const FALLBACK_QUOTE: Quote = {
   id: 0,
-  quote: "The only way to do great work is to love what you do.",
-  author: "Steve Jobs"
+  quote: 'The only way to do great work is to love what you do.',
+  author: 'Steve Jobs',
 };
 
 const QuoteOfTheDay = () => {
@@ -34,18 +34,21 @@ const QuoteOfTheDay = () => {
         const response = await fetch('https://dummyjson.com/quotes/random');
         if (!response.ok) throw new Error('Failed to fetch quote');
         const data = await response.json();
-        
+
         const newQuote: Quote = {
           id: data.id,
           quote: data.quote,
-          author: data.author
+          author: data.author,
         };
 
-        localStorage.setItem('daily_quote', JSON.stringify({
-          date: today,
-          quote: newQuote
-        }));
-        
+        localStorage.setItem(
+          'daily_quote',
+          JSON.stringify({
+            date: today,
+            quote: newQuote,
+          }),
+        );
+
         setQuote(newQuote);
       } catch (error) {
         console.error('Error fetching quote:', error);
@@ -62,9 +65,9 @@ const QuoteOfTheDay = () => {
 
   return (
     <div className="animate-fade-in mx-auto max-w-2xl px-4 text-center">
-      <div className="relative rounded-xl border border-white/20 bg-black/20 p-6 backdrop-blur-md shadow-lg transition-all hover:bg-black/30">
+      <div className="relative rounded-xl border border-white/20 bg-black/20 p-6 shadow-lg backdrop-blur-md transition-all hover:bg-black/30">
         <blockquote className="relative">
-          <p className="text-lg font-medium text-white/90 drop-shadow-md italic md:text-xl">
+          <p className="text-lg font-medium text-white/90 italic drop-shadow-md md:text-xl">
             "{quote?.quote}"
           </p>
           <footer className="mt-3 text-sm font-medium text-white/70 drop-shadow-sm">

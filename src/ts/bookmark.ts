@@ -1,7 +1,10 @@
-export interface IBookmark {
+export interface ITopSite {
   url: string;
-  id: string;
   title: string;
+}
+
+export interface IBookmark extends ITopSite {
+  id: string;
   parentId: string;
 }
 

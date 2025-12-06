@@ -3,7 +3,7 @@ import { memo, type FC } from 'react';
 import type { IBookmark, IBookmarkFolder, IBookmarkItem } from '@ts/bookmark';
 
 import AddBookmarkButton from './AddBookmarkButton';
-import Bookmark from './Bookmark';
+import Site from './Site';
 import BookmarkFolder from './BookmarkFolder';
 import BookmarkMenu from './BookmarkMenu';
 
@@ -28,9 +28,9 @@ const BookmarkSection: FC<BookmarkSectionProps> = ({ bookmarks }) => {
           }
 
           return (
-            <Bookmark
+            <Site
               key={id}
-              bookmark={bookmark as IBookmark}
+              site={bookmark as IBookmark}
             />
           );
         })}
