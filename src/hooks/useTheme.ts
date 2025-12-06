@@ -51,7 +51,7 @@ const useTheme = () => {
       LocalStorageKeys.BACKGROUND_OPTION_INDEX,
     );
 
-    if (savedMode && savedBackgroundOptionIndex) {
+    if (savedMode && savedBackgroundOptionIndex !== null) {
       switchTheme(savedMode, savedBackgroundOptionIndex);
     }
   };
