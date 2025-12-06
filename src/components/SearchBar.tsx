@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react';
+import { FaMicrophoneLines, FaMagnifyingGlass } from 'react-icons/fa6';
 
-import { useAppSelector } from '@store';
 import { PLACEHOLDERS } from '@constants/label';
-import useBookmarks from '@hooks/useBookmarks';
-import { getSearchUrl } from '@utils';
 import { SEARCH_ENGINES } from '@constants/search';
+import useBookmarks from '@hooks/useBookmarks';
+import { useAppSelector } from '@store';
+import { getSearchUrl } from '@utils';
 import { fetchSuggestions } from '@utils/suggestions';
 
-import { FaMicrophoneLines, FaArrowUp, FaMagnifyingGlass } from 'react-icons/fa6';
+import EngineSuggestion from './EngineSuggestion';
+import BookmarkSuggestion from './BookmarkSuggestion';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -174,7 +176,6 @@ const SearchBar = () => {
             value={query}
             onChange={handleChange}
             onFocus={() => query.trim().length > 0 && setShowSuggestions(true)}
-
             className={`block w-full rounded-2xl border border-white/20 bg-white/10 py-3 pr-24 pl-12 text-white placeholder-gray-400 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl focus:bg-black/95 focus:ring-2 focus:ring-blue-500/50 focus:outline-none ${
               showSuggestions && querySuggestions.length > 0 ? 'rounded-b-none' : ''
             }`}
@@ -211,41 +212,25 @@ const SearchBar = () => {
             {bookmarkSuggestions.length > 0 && (
               <div className="flex max-h-[104px] w-full flex-row flex-wrap gap-2 overflow-hidden border-b border-white/10 p-2">
                 {bookmarkSuggestions.map((suggestion, index) => (
-                  <div
+                  <BookmarkSuggestion
                     key={`bookmark-${index}`}
-                    onClick={() => handleSuggestionClick(suggestion.url ?? '', 'bookmark')}
-                    className="flex max-w-[150px] shrink-0 cursor-pointer items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-white transition-colors hover:bg-white/10"
-                    title={suggestion.title}
-                  >
-                    <span className="shrink-0 text-base">⭐</span>
-                    <span className="truncate text-xs font-medium">{suggestion.title}</span>
-                  </div>
+                    suggestion={suggestion}
+                    handleSuggestionClick={handleSuggestionClick}
+                  />
                 ))}
               </div>
             )}
-
-            {/* Search Suggestions Section - Vertical */}
             <ul className="flex flex-col py-1">
               {querySuggestions.map((suggestion, index) => (
-                <li
+                <EngineSuggestion
                   key={`search-${index}`}
-                  onClick={() => handleSuggestionClick(suggestion, 'search')}
-                  className="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-white transition-colors hover:bg-white/10"
-                >
-                  <img
-                    src={SearchIcon}
-                    alt={engineName}
-                    className="h-4 w-4"
-                  />
-                  <span className="flex-1 truncate text-sm font-medium">{suggestion}</span>
-                  <button
-                    onClick={(e) => handleFillQuery(e, suggestion)}
-                    className="flex h-8 w-8 items-center justify-center cursor-pointer rounded-full p-2 text-gray-400 hover:bg-white/10 hover:text-white group-hover:block"
-                    title="Fill in search"
-                  >
-                    <FaArrowUp className="h-3 w-3 -rotate-45" />
-                  </button>
-                </li>
+                  query={query}
+                  suggestion={suggestion}
+                  engineIcon={SearchIcon}
+                  engineName={engineName}
+                  handleFillQuery={handleFillQuery}
+                  handleSuggestionClick={handleSuggestionClick}
+                />
               ))}
             </ul>
           </div>
