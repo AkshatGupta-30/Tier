@@ -10,6 +10,7 @@ import { fetchSuggestions } from '@utils/suggestions';
 
 import EngineSuggestion from './EngineSuggestion';
 import BookmarkSuggestion from './BookmarkSuggestion';
+import useDebounce from '@hooks/useDebounce';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -29,12 +30,15 @@ const SearchBar = () => {
   const recognitionRef = useRef<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [isListening, setIsListening] = useState(false);
 
+  const {debouncedValue}= useDebounce(query)
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      setShowSuggestions(false);
+    }
+  };
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
-    };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -70,7 +74,7 @@ const SearchBar = () => {
       setQuerySuggestions([]);
       setShowSuggestions(false);
     }
-  }, [query, selectedEngine]);
+  }, [debouncedValue, selectedEngine]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

@@ -25,14 +25,3 @@ export const getSearchUrl = (query: string, engine: SearchEngineKey) => {
   searchUrl.searchParams.append(searchEngine.QUERY_PARAM, query);
   return searchUrl.toString();
 };
-
-export const debounce = (callback: () => void, delay: number) => {
-  let timeout: number;
-
-  return () => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(callback, delay);
-  };
-};
