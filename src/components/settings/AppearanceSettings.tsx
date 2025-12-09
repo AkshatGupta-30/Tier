@@ -13,12 +13,12 @@ const AppearanceSettings = () => {
         component={<SwitchTheme />}
       />
       <SettingsSection
-        title="Wallpaper"
-        component={<BackgroundImages />}
-      />
-      <SettingsSection
         title="Accent Color"
         component={<CustomBackground />}
+      />
+      <SettingsSection
+        title="Wallpaper"
+        component={<BackgroundImages />}
       />
     </div>
   );
