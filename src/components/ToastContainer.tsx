@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { BsInfoLg } from 'react-icons/bs';
@@ -9,7 +9,6 @@ import { MdDone } from 'react-icons/md';
 import { ToastType, type IToast } from '@ts/toast';
 import { useAppSelector, useAppDispatch } from '@store';
 import { toastManager, hideToast, popToast } from '@store/slices/toast';
-import { appendToast } from '@utils';
 
 const modalRoot = document.querySelector('#modal-root') as Element;
 
@@ -58,15 +57,21 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
   );
 };
 
-const ToastComponent = ({ message, type, isVisible, index, onClose }: IToast & { index: number; onClose: (index: number) => void }) => {
+const ToastComponent = ({
+  message,
+  type,
+  isVisible,
+  index,
+  onClose,
+}: IToast & { index: number; onClose: (index: number) => void }) => {
   return (
     <div
       className={`flex w-fit flex-row items-center gap-3 rounded-lg bg-[#222222] p-2.5 ${isVisible ? 'slide-in' : 'slide-out'}`}
     >
       <ToastIcon type={type} />
       <p className="h-full max-w-40 min-w-6 text-white">{message}</p>
-      <button 
-        className="rounded-full p-2 cursor-pointer hover:opacity-80 transition-opacity"
+      <button
+        className="cursor-pointer rounded-full p-2 transition-opacity hover:opacity-80"
         onClick={() => onClose(index)}
       >
         <IoMdClose className="text-lg text-white" />
@@ -77,21 +82,22 @@ const ToastComponent = ({ message, type, isVisible, index, onClose }: IToast & {
 
 const ToastContainer = () => {
   const dispatch = useAppDispatch();
-  const {toasts} = useAppSelector(toastManager)
+  const { toasts } = useAppSelector(toastManager);
 
   const handleCloseToast = (index: number) => {
     dispatch(hideToast(index));
     setTimeout(() => dispatch(popToast()), 500); // Wait for animation to complete
   };
 
-  useEffect(() => {
-    appendToast("svfvedv frvfrtgvbfrtgvbgtrfvbgtrfgb", ToastType.INFO)
-  }, [])
-
   return createPortal(
-    <div className={'pointer-events-none fixed inset-0 z-50 p-4 flex flex-col gap-2'}>
+    <div className={'pointer-events-none fixed inset-0 z-50 flex flex-col gap-2 p-4'}>
       {toasts.map((t, index) => (
-        <ToastComponent {...t} key={index} index={index} onClose={handleCloseToast} />
+        <ToastComponent
+          {...t}
+          key={index}
+          index={index}
+          onClose={handleCloseToast}
+        />
       ))}
     </div>,
     modalRoot,
