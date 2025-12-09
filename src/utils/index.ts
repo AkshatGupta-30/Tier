@@ -1,5 +1,8 @@
 import { SEARCH_ENGINES, type SearchEngineKey } from '@constants/search';
 import { URLS } from '@constants';
+import type { ToastType } from '@ts/toast';
+import store from '@store';
+import { popToast, showToast, hideToast } from '@store/slices/toast';
 
 export const truncateText = (text: string, maxLength: number = 16) => {
   if (text.length > maxLength) {
@@ -25,3 +28,12 @@ export const getSearchUrl = (query: string, engine: SearchEngineKey) => {
   searchUrl.searchParams.append(searchEngine.QUERY_PARAM, query);
   return searchUrl.toString();
 };
+
+
+export const appendToast = (message: string, type: ToastType) => {
+  const toastIndex = 0;
+  
+  store.dispatch(showToast({message, type, isVisible: true}));
+  setTimeout(() => store.dispatch(hideToast(toastIndex)), 3000);
+  setTimeout(() => store.dispatch(popToast()), 3500);
+}
