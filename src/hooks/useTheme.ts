@@ -12,6 +12,8 @@ import {
 import { LocalStorageKeys } from '@ts/storage';
 import { ThemeModeEnum } from '@ts/theme';
 import type { BackgroundOption } from '@ts/theme';
+import { ToastType } from '@ts/toast';
+import { appendToast } from '@utils';
 
 import useLocalStorage from './useLocalStorage';
 
@@ -134,10 +136,15 @@ const useTheme = () => {
         const currentCustomBackgrounds =
           getLocalStorage<BackgroundOption[]>(LocalStorageKeys.CUSTOM_BACKGROUNDS) || [];
         const updatedCustomBackgrounds = [...currentCustomBackgrounds, newBackground];
-        setLocalStorage(LocalStorageKeys.CUSTOM_BACKGROUNDS, updatedCustomBackgrounds);
-        setLocalStorage(LocalStorageKeys.SELECTED_BACKGROUND_IMAGE_ID, newBackground.id);
 
-        window.location.reload();
+        try {
+          setLocalStorage(LocalStorageKeys.CUSTOM_BACKGROUNDS, updatedCustomBackgrounds);
+          setLocalStorage(LocalStorageKeys.SELECTED_BACKGROUND_IMAGE_ID, newBackground.id);
+
+          window.location.reload();
+        } catch {
+          appendToast("Storage full: Cannot add more images", ToastType.ERROR)
+        }
       };
       reader.readAsDataURL(file);
     },

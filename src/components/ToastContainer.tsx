@@ -90,7 +90,7 @@ const ToastContainer = () => {
   };
 
   return createPortal(
-    <div className={'pointer-events-none fixed inset-0 z-50 flex flex-col gap-2 p-4'}>
+    <div className={'pointer-events-none fixed inset-0 z-100 flex flex-col gap-2 p-4 items-end'}>
       {toasts.map((t, index) => (
         <ToastComponent
           {...t}

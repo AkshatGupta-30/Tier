@@ -29,11 +29,10 @@ export const getSearchUrl = (query: string, engine: SearchEngineKey) => {
   return searchUrl.toString();
 };
 
-
 export const appendToast = (message: string, type: ToastType) => {
   const toastIndex = 0;
-  
-  store.dispatch(showToast({message, type, isVisible: true}));
+
+  store.dispatch(showToast({ message, type, isVisible: true }));
   setTimeout(() => store.dispatch(hideToast(toastIndex)), 3000);
   setTimeout(() => store.dispatch(popToast()), 3500);
-}
+};

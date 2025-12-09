@@ -1,31 +1,30 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { IToast } from '@ts/toast';
 
-
 interface ToastState {
-  toasts: IToast[]
+  toasts: IToast[];
 }
 
 const initialState: ToastState = {
-  toasts: []
+  toasts: [],
 };
 
 const toastSlice = createSlice({
   name: 'toast',
   initialState,
   reducers: {
-    showToast: (state, {payload}: PayloadAction<IToast>) => {
-      state.toasts = [payload, ...state.toasts]
+    showToast: (state, { payload }: PayloadAction<IToast>) => {
+      state.toasts = [payload, ...state.toasts];
     },
-    hideToast: (state, {payload}: PayloadAction<number>) => {
+    hideToast: (state, { payload }: PayloadAction<number>) => {
       const toast = state.toasts[payload];
       if (toast) {
         toast.isVisible = false;
       }
     },
     popToast: (state) => {
-      state.toasts.pop()
-    }
+      state.toasts.pop();
+    },
   },
 });
 
