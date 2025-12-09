@@ -2,13 +2,12 @@ import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { BsInfoLg } from 'react-icons/bs';
-import { IoMdClose } from 'react-icons/io';
 import { IoAlert } from 'react-icons/io5';
 import { MdDone } from 'react-icons/md';
 
 import { ToastType, type IToast } from '@ts/toast';
-import { useAppSelector, useAppDispatch } from '@store';
-import { toastManager, hideToast, popToast } from '@store/slices/toast';
+import { useAppSelector } from '@store';
+import { toastManager } from '@store/slices/toast';
 
 const modalRoot = document.querySelector('#modal-root') as Element;
 
@@ -61,33 +60,19 @@ const ToastComponent = ({
   message,
   type,
   isVisible,
-  index,
-  onClose,
-}: IToast & { index: number; onClose: (index: number) => void }) => {
+}: IToast) => {
   return (
     <div
-      className={`flex w-fit flex-row items-center gap-3 rounded-lg bg-[#222222] p-2.5 ${isVisible ? 'slide-in' : 'slide-out'}`}
+      className={`flex w-fit flex-row items-center gap-3 rounded-lg bg-[#333333] dark:bg-[#cccccc] p-2.5 ${isVisible ? 'slide-in' : 'slide-out'}`}
     >
       <ToastIcon type={type} />
-      <p className="h-full max-w-40 min-w-6 text-white">{message}</p>
-      <button
-        className="cursor-pointer rounded-full p-2 transition-opacity hover:opacity-80"
-        onClick={() => onClose(index)}
-      >
-        <IoMdClose className="text-lg text-white" />
-      </button>
+      <p className="h-full max-w-40 min-w-6 text-white dark:text-black">{message}</p>
     </div>
   );
 };
 
 const ToastContainer = () => {
-  const dispatch = useAppDispatch();
   const { toasts } = useAppSelector(toastManager);
-
-  const handleCloseToast = (index: number) => {
-    dispatch(hideToast(index));
-    setTimeout(() => dispatch(popToast()), 500); // Wait for animation to complete
-  };
 
   return createPortal(
     <div className={'pointer-events-none fixed inset-0 z-100 flex flex-col gap-2 p-4 items-end'}>
@@ -95,8 +80,6 @@ const ToastContainer = () => {
         <ToastComponent
           {...t}
           key={index}
-          index={index}
-          onClose={handleCloseToast}
         />
       ))}
     </div>,
