@@ -25,7 +25,7 @@ const Site = ({ site, topSite: isTopSite }: ISiteProps) => {
         <img
           src={faviconUrl}
           alt={title}
-          className={`h-9 w-9 object-contain opacity-80 transition-all duration-150 group-hover:opacity-100 ${isTopSite ? "group-hover:-rotate-6 group-hover:scale-105": ""}`}
+          className={`h-9 w-9 object-contain opacity-80 transition-all duration-150 group-hover:opacity-100 ${isTopSite ? 'group-hover:scale-105 group-hover:-rotate-6' : ''}`}
         />
       </div>
       <span className="line-clamp-2 text-center text-sm font-medium text-gray-700 transition-colors group-hover:text-black dark:text-gray-300 group-hover:dark:text-white">

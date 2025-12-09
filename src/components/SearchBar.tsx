@@ -30,7 +30,7 @@ const SearchBar = () => {
   const recognitionRef = useRef<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [isListening, setIsListening] = useState(false);
 
-  const {debouncedValue}= useDebounce(query)
+  const { debouncedValue } = useDebounce(query);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -39,7 +39,6 @@ const SearchBar = () => {
   };
 
   useEffect(() => {
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);

@@ -108,7 +108,7 @@ const BackgroundImages = () => {
   const { customBackgrounds, selectedImageId } = useTheme();
 
   const items = [
-    { type: 'button', id: 'upload-btn' },
+    ...(customBackgrounds.length <= 5 ? [{ type: 'button', id: 'upload-btn' }] : []),
     { type: 'none', id: 'none-option' },
     ...customBackgrounds,
   ];
