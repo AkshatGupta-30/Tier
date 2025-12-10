@@ -143,7 +143,7 @@ const useTheme = () => {
 
           window.location.reload();
         } catch {
-          appendToast("Storage full: Cannot add more images", ToastType.ERROR)
+          appendToast('Storage full: Cannot add more images', ToastType.ERROR);
         }
       };
       reader.readAsDataURL(file);

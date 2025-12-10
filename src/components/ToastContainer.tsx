@@ -56,14 +56,10 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
   );
 };
 
-const ToastComponent = ({
-  message,
-  type,
-  isVisible,
-}: IToast) => {
+const ToastComponent = ({ message, type, isVisible }: IToast) => {
   return (
     <div
-      className={`flex w-fit flex-row items-center gap-3 rounded-lg bg-[#333333] dark:bg-[#cccccc] p-2.5 ${isVisible ? 'slide-in' : 'slide-out'}`}
+      className={`flex w-fit flex-row items-center gap-3 rounded-lg bg-[#333333] p-2.5 dark:bg-[#cccccc] ${isVisible ? 'slide-in' : 'slide-out'}`}
     >
       <ToastIcon type={type} />
       <p className="h-full max-w-40 min-w-6 text-white dark:text-black">{message}</p>
@@ -75,7 +71,7 @@ const ToastContainer = () => {
   const { toasts } = useAppSelector(toastManager);
 
   return createPortal(
-    <div className={'pointer-events-none fixed inset-0 z-100 flex flex-col gap-2 p-4 items-end'}>
+    <div className={'pointer-events-none fixed inset-0 z-100 flex flex-col items-end gap-2 p-4'}>
       {toasts.map((t, index) => (
         <ToastComponent
           {...t}
