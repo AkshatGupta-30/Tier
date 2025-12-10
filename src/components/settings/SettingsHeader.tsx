@@ -1,8 +1,10 @@
 import { memo } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import Modal from '@components/modals';
+import { useNavigate } from 'react-router-dom';
 
 const SettingsHeader = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-between border-b border-gray-100 bg-white/80 px-6 py-4 backdrop-blur-md dark:border-white/10 dark:bg-zinc-900/80">
       <div className="flex w-full flex-row items-center justify-between gap-4">
@@ -11,7 +13,7 @@ const SettingsHeader = () => {
         </div>
         <button
           className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-white/10"
-          onClick={() => Modal.close()}
+          onClick={() => navigate(-1)}
         >
           <IoMdClose className="text-xl text-black dark:text-white" />
         </button>

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { IoMdColorPalette, IoMdSettings } from 'react-icons/io';
 
 import AppearanceSettings from '@components/settings/AppearanceSettings';
@@ -8,7 +8,7 @@ import SettingsHeader from '@components/settings/SettingsHeader';
 import { SettingsTabEnum } from '@constants/settings';
 import useTheme from '@hooks/useTheme';
 
-const SettingsModal = () => {
+const Settings = () => {
   const { backgroundColor } = useTheme();
   const [activeTab, setActiveTab] = useState<SettingsTabEnum>(SettingsTabEnum.GENERAL);
 
@@ -17,12 +17,10 @@ const SettingsModal = () => {
   }, []);
 
   return (
-    <div
-      className={`flex h-full w-full flex-col overflow-hidden rounded-2xl ${backgroundColor?.classes}`}
-    >
+    <div className={`flex h-full w-full flex-col overflow-hidden ${backgroundColor?.classes}`}>
       <SettingsHeader />
       <div className="flex w-full flex-1 flex-row overflow-hidden">
-        <aside className="flex w-48 shrink-0 flex-col gap-2 border-r border-gray-100 bg-gray-50/50 p-4 dark:border-white/10 dark:bg-black/20">
+        <aside className="flex h-full w-48 shrink-0 flex-col gap-2 border-r border-gray-100 bg-gray-50/50 p-4 dark:border-white/10 dark:bg-black/20">
           <NavItem
             id={SettingsTabEnum.GENERAL}
             label="General"
@@ -40,7 +38,7 @@ const SettingsModal = () => {
         </aside>
 
         {/* Content */}
-        <div className="scrollbar-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 w-full flex-1 overflow-y-auto p-8">
+        <div className="scrollbar-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 h-full w-full flex-1 overflow-y-auto p-8">
           <div className="flex flex-1 flex-col gap-10">
             {activeTab === SettingsTabEnum.GENERAL && <GeneralSettings />}
             {activeTab === SettingsTabEnum.APPEARANCE && <AppearanceSettings />}
@@ -51,4 +49,4 @@ const SettingsModal = () => {
   );
 };
 
-export default SettingsModal;
+export default memo(Settings);

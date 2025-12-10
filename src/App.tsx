@@ -1,9 +1,28 @@
 import { useEffect } from 'react';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import useBookmarks from '@hooks/useBookmarks';
-import NewTab from '@pages/NewTab';
-import useTheme from '@hooks/useTheme';
 import ToastContainer from '@components/ToastContainer';
+import Settings from '@components/settings';
+import { ROUTES } from '@constants/routes';
+import useBookmarks from '@hooks/useBookmarks';
+import useTheme from '@hooks/useTheme';
+import NewTab from '@pages/NewTab';
+
+const routes = [
+  {
+    path: ROUTES.HOME,
+    element: <NewTab />,
+  },
+  {
+    path: ROUTES.SETTINGS,
+    element: <Settings />,
+  },
+];
+
+const router = createMemoryRouter(routes, {
+  initialEntries: ['/'], // Start path
+  initialIndex: 0,
+});
 
 const App = () => {
   const { fetchBookmarks } = useBookmarks();
@@ -16,7 +35,7 @@ const App = () => {
 
   return (
     <>
-      <NewTab />
+      <RouterProvider router={router} />
       <ToastContainer />
     </>
   );

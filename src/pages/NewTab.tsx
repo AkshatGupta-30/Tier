@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import BookmarkSection from '@components/BookmarkSection';
 import BreadCrumb from '@components/BreadCrumb';
 import Header from '@components/Header';
@@ -35,4 +37,4 @@ const NewTab = () => {
   );
 };
 
-export default NewTab;
+export default memo(NewTab);
