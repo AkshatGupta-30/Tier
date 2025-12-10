@@ -13,8 +13,10 @@ const BackgroundColorCards = ({ isSelected, background, index }: BackgroundCards
 
   return (
     <button
-      className={`relative flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded-full border-2 transition-all duration-300 ${
-        isSelected ? 'border-blue-500 dark:border-blue-400' : 'border-transparent'
+      className={`relative flex h-16 w-16 cursor-pointer flex-col items-center justify-center rounded-full transition-all duration-300 ${
+        isSelected
+          ? 'border-3 border-blue-500 dark:border-blue-400'
+          : 'border border-black/20 dark:border-white/20'
       } ${classes}`}
       onClick={() => switchBackgroundOption(index)}
     />

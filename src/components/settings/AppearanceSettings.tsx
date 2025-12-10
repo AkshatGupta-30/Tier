@@ -7,7 +7,7 @@ import SwitchTheme from '@components/SwitchTheme';
 
 const AppearanceSettings = () => {
   return (
-    <div className="animate-in fade-in slide-in-from-right-4 flex flex-col gap-8 duration-300">
+    <div className="animate-in fade-in slide-in-from-right-4 relative flex flex-col gap-8 overflow-y-auto duration-300">
       <SettingsSection
         title="Theme Mode"
         component={<SwitchTheme />}
@@ -20,6 +20,9 @@ const AppearanceSettings = () => {
         title="Wallpaper"
         component={<BackgroundImages />}
       />
+      <button className="absolute top-0 right-0 cursor-pointer rounded-lg bg-black p-2 font-bold text-white dark:bg-white dark:text-black">
+        Show Preview
+      </button>
     </div>
   );
 };
