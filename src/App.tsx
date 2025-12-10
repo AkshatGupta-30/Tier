@@ -7,7 +7,7 @@ import ToastContainer from '@components/ToastContainer';
 
 const App = () => {
   const { fetchBookmarks } = useBookmarks();
-  const { initializeTheme, backgroundImage } = useTheme();
+  const { initializeTheme } = useTheme();
 
   useEffect(() => {
     fetchBookmarks();
@@ -16,13 +16,6 @@ const App = () => {
 
   return (
     <>
-      {backgroundImage?.value && (
-        <img
-          src={backgroundImage.value}
-          alt="background"
-          className="fixed top-0 left-0 -z-10 h-screen w-screen object-cover"
-        />
-      )}
       <NewTab />
       <ToastContainer />
     </>
