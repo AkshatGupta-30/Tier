@@ -1,51 +1,40 @@
-import { useEffect, useRef, useState } from 'react';
+import { Activity, useEffect, useRef, useState, type SetStateAction, type Dispatch } from 'react';
+import { createPortal } from 'react-dom';
+
 import NewTab from '@pages/NewTab';
+import useTheme from '@hooks/useTheme';
+import { IoMdClose } from 'react-icons/io';
 
-const NewTabPreview = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+const modalRoot = document.querySelector('#modal-root') as Element;
 
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
+interface NewTabPreviewProps {
+  setVisible: Dispatch<SetStateAction<boolean>>;
+  isOpen?: boolean;
+}
 
-  useEffect(() => {
-    const updateScale = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.clientWidth;
-        const newScale = containerWidth / screenWidth;
-        setScale(newScale);
-      }
-    };
+const NewTabPreview = ({ isOpen, setVisible }: NewTabPreviewProps) => {
+  const { backgroundColor } = useTheme();
 
-    updateScale();
-    const resizeObserver = new ResizeObserver(updateScale);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    return () => resizeObserver.disconnect();
-  }, [screenWidth]);
-
-  return (
-    <div
-      className="relative w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm dark:border-gray-700"
-      style={{ aspectRatio: `${screenWidth} / ${screenHeight}` }}
-      ref={containerRef}
-    >
-      <div
-        className="pointer-events-none origin-top-left overflow-hidden select-none"
-        style={{
-          width: screenWidth,
-          height: screenHeight,
-          transform: `scale(${scale})`,
-        }}
-        inert
-      >
-        <NewTab />
+  return createPortal(
+    <Activity mode={isOpen ? 'visible' : 'hidden'}>
+      <div className={`fixed inset-0 z-50`}>
+        <button className="fixed inset-0 z-0 bg-black/80" />
+        <div
+          className={`relative z-1 flex h-full w-full scale-90 items-center justify-center rounded-2xl p-10 ${backgroundColor.classes}`}
+        >
+          <div inert>
+            <NewTab />
+          </div>
+          <button
+            className="absolute top-0 right-0 m-3 cursor-pointer rounded-full bg-black/40 p-2 transition-colors duration-300 hover:bg-black/80 dark:bg-white/40 dark:hover:bg-white/80"
+            onClick={() => setVisible(false)}
+          >
+            <IoMdClose className="text-4xl text-white dark:text-black" />
+          </button>
+        </div>
       </div>
-
-      <div className="pointer-events-none absolute inset-0 z-50 rounded-lg" />
-    </div>
+    </Activity>,
+    modalRoot,
   );
 };
 
