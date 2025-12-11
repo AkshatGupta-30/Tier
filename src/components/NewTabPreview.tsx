@@ -20,13 +20,16 @@ const NewTabPreview = ({ isOpen, setVisible }: NewTabPreviewProps) => {
       <div className={`fixed inset-0 z-50`}>
         <button className="fixed inset-0 z-0 bg-black/80" />
         <div
-          className={`relative z-1 flex h-full w-full scale-90 items-center justify-center rounded-2xl p-10 ${backgroundColor.classes}`}
+          className={`relative z-1 flex h-full w-full scale-90 items-center justify-center rounded-2xl ${backgroundColor.classes}`}
         >
-          <div inert>
+          <div
+            className="h-full w-full px-10"
+            inert
+          >
             <NewTab />
           </div>
           <button
-            className="absolute top-0 right-0 m-3 cursor-pointer rounded-full bg-black/40 p-2 transition-colors duration-300 hover:bg-black/80 dark:bg-white/40 dark:hover:bg-white/80"
+            className="absolute top-0 right-0 z-1000 m-3 cursor-pointer rounded-full bg-black/40 p-2 transition-colors duration-300 hover:bg-black/80 dark:bg-white/40 dark:hover:bg-white/80"
             onClick={() => setVisible(false)}
           >
             <IoMdClose className="text-4xl text-white dark:text-black" />
