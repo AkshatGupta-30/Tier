@@ -14,7 +14,7 @@ const GeneralSettings = () => {
         title="Search Engine"
         component={<SearchEngineSelector />}
       />
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-start gap-10">
         <p className="text-lg font-bold text-gray-900 dark:text-gray-100">Hide Today's Quote</p>
         <Switch
           checked={hideQuote}
