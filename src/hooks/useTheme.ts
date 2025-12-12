@@ -6,6 +6,8 @@ import { useAppSelector } from '@store';
 import {
   setThemeBackgroundOption,
   setThemeMode,
+  setBackgroundBlur,
+  setBackgroundOverlay,
   themeInitialState,
   themeManager,
 } from '@store/slices/theme';
@@ -20,7 +22,7 @@ import useLocalStorage from './useLocalStorage';
 const useTheme = () => {
   const dispatch = useDispatch();
   const theme = useAppSelector(themeManager);
-  const { mode, backgroundOptionIndex } = theme;
+  const { mode, backgroundOptionIndex, backgroundBlur, backgroundOverlay } = theme;
   const isLightMode = mode === ThemeModeEnum.LIGHT;
 
   const { getLocalStorage, setLocalStorage } = useLocalStorage();
@@ -55,6 +57,16 @@ const useTheme = () => {
 
     if (savedMode && savedBackgroundOptionIndex !== null) {
       switchTheme(savedMode, savedBackgroundOptionIndex);
+    }
+
+    const savedBackgroundBlur = getLocalStorage<number>(LocalStorageKeys.BACKGROUND_BLUR);
+    if (savedBackgroundBlur !== null) {
+      dispatch(setBackgroundBlur(savedBackgroundBlur));
+    }
+
+    const savedBackgroundOverlay = getLocalStorage<number>(LocalStorageKeys.BACKGROUND_OVERLAY);
+    if (savedBackgroundOverlay !== null) {
+      dispatch(setBackgroundOverlay(savedBackgroundOverlay));
     }
   };
 
@@ -166,6 +178,22 @@ const useTheme = () => {
     [getLocalStorage, selectedImageId, setLocalStorage],
   );
 
+  const updateBackgroundBlur = useCallback(
+    (blur: number) => {
+      setLocalStorage(LocalStorageKeys.BACKGROUND_BLUR, blur);
+      dispatch(setBackgroundBlur(blur));
+    },
+    [dispatch, setLocalStorage],
+  );
+
+  const updateBackgroundOverlay = useCallback(
+    (overlay: number) => {
+      setLocalStorage(LocalStorageKeys.BACKGROUND_OVERLAY, overlay);
+      dispatch(setBackgroundOverlay(overlay));
+    },
+    [dispatch, setLocalStorage],
+  );
+
   return {
     ...theme,
     isLightMode,
@@ -181,6 +209,10 @@ const useTheme = () => {
     selectBackgroundImage,
     removeCustomBackground,
     backgroundImage,
+    backgroundBlur,
+    backgroundOverlay,
+    updateBackgroundBlur,
+    updateBackgroundOverlay,
   };
 };
 
