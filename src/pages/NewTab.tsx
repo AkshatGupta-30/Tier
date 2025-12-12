@@ -12,22 +12,31 @@ import useTheme from '@hooks/useTheme';
 const NewTab = () => {
   const { bookmarks } = useBookmarks();
   const { handleEmptySpaceContextMenu } = useBookmarkContextMenu();
-  const { backgroundImage } = useTheme();
+  const { backgroundImage, backgroundBlur, backgroundOverlay } = useTheme();
 
   return (
     <div
-      className="relative flex max-h-screen min-h-screen w-full flex-col"
+      className="relative flex max-h-screen min-h-screen w-full flex-col px-10"
       onContextMenu={handleEmptySpaceContextMenu}
     >
-      {backgroundImage?.value && (
-        <img
-          src={backgroundImage.value}
-          alt="background"
-          className="fixed top-0 left-0 -z-10 h-screen w-screen object-cover"
-        />
+      {(backgroundImage?.value || backgroundOverlay > 0) && (
+        <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
+          {backgroundImage?.value && (
+            <img
+              src={backgroundImage.value}
+              alt="background"
+              className="h-full w-full object-cover"
+              style={{ filter: `blur(${backgroundBlur}px)` }}
+            />
+          )}
+          <div
+            className="absolute inset-0 bg-black transition-all duration-300 ease-in-out"
+            style={{ opacity: backgroundOverlay / 100 }}
+          />
+        </div>
       )}
       <Header />
-      <main className="animate-fade-in scrollbar-hidden z-10 flex w-full flex-1 flex-col items-center gap-8 overflow-y-auto p-10 pt-10">
+      <main className="animate-fade-in scrollbar-hidden z-10 flex w-full flex-1 flex-col items-center gap-8 overflow-y-auto pt-10">
         <QuoteOfTheDay />
         <TopSitesSection />
         <BreadCrumb />
