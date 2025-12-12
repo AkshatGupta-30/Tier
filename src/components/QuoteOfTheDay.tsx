@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import useTheme from '@hooks/useTheme';
+
 interface Quote {
   id: number;
   quote: string;
@@ -13,6 +15,7 @@ const FALLBACK_QUOTE: Quote = {
 };
 
 const QuoteOfTheDay = () => {
+  const { hideQuote } = useTheme();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -61,7 +64,7 @@ const QuoteOfTheDay = () => {
     fetchQuote();
   }, []);
 
-  if (loading) return null;
+  if (loading || hideQuote) return null;
 
   return (
     <div className="animate-fade-in mx-auto max-w-2xl px-4 text-center">
