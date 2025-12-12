@@ -8,6 +8,7 @@ import {
   setThemeMode,
   setBackgroundBlur,
   setBackgroundOverlay,
+  setHideQuote,
   themeInitialState,
   themeManager,
 } from '@store/slices/theme';
@@ -67,6 +68,11 @@ const useTheme = () => {
     const savedBackgroundOverlay = getLocalStorage<number>(LocalStorageKeys.BACKGROUND_OVERLAY);
     if (savedBackgroundOverlay !== null) {
       dispatch(setBackgroundOverlay(savedBackgroundOverlay));
+    }
+
+    const savedHideQuote = getLocalStorage<boolean>(LocalStorageKeys.HIDE_QUOTE);
+    if (savedHideQuote !== null) {
+      dispatch(setHideQuote(savedHideQuote));
     }
   };
 
@@ -194,6 +200,14 @@ const useTheme = () => {
     [dispatch, setLocalStorage],
   );
 
+  const toggleHideQuote = useCallback(
+    (shouldHide: boolean) => {
+      setLocalStorage(LocalStorageKeys.HIDE_QUOTE, shouldHide);
+      dispatch(setHideQuote(shouldHide));
+    },
+    [dispatch, setLocalStorage],
+  );
+
   return {
     ...theme,
     isLightMode,
@@ -213,6 +227,7 @@ const useTheme = () => {
     backgroundOverlay,
     updateBackgroundBlur,
     updateBackgroundOverlay,
+    toggleHideQuote,
   };
 };
 

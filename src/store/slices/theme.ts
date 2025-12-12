@@ -7,6 +7,7 @@ interface ThemeState {
   backgroundOptionIndex: number;
   backgroundBlur: number;
   backgroundOverlay: number;
+  hideQuote: boolean;
 }
 
 const initialState: ThemeState = {
@@ -14,6 +15,7 @@ const initialState: ThemeState = {
   backgroundOptionIndex: 0,
   backgroundBlur: 0,
   backgroundOverlay: 0,
+  hideQuote: false,
 };
 
 const themeSlice = createSlice({
@@ -32,11 +34,19 @@ const themeSlice = createSlice({
     setBackgroundOverlay: (state, { payload }: PayloadAction<number>) => {
       state.backgroundOverlay = payload;
     },
+    setHideQuote: (state, { payload }: PayloadAction<boolean>) => {
+      state.hideQuote = payload;
+    },
   },
 });
 
-export const { setThemeMode, setThemeBackgroundOption, setBackgroundBlur, setBackgroundOverlay } =
-  themeSlice.actions;
+export const {
+  setThemeMode,
+  setThemeBackgroundOption,
+  setBackgroundBlur,
+  setBackgroundOverlay,
+  setHideQuote,
+} = themeSlice.actions;
 
 export const themeInitialState = initialState;
 
