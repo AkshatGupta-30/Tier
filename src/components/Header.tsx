@@ -23,10 +23,6 @@ const Header = () => {
       </div>
 
       <div className="flex flex-row items-center gap-5">
-        <button className="flex items-center justify-end">
-          <GoDownload className="aspect-square size-7 transform cursor-pointer text-black/70 transition-all duration-300 ease-in-out hover:scale-110 hover:text-black dark:text-white/70 dark:hover:text-white" />
-        </button>
-
         <button
           className="flex items-center justify-end"
           onClick={() => navigate(ROUTES.SETTINGS)}

@@ -3,7 +3,7 @@
   "name": "Tier",
   "version": "1.0.0",
   "description": "Tier",
-  "permissions": ["bookmarks", "storage", "topSites", "downloads", "downloads.open"],
+  "permissions": ["bookmarks", "storage", "topSites"],
   "host_permissions": [
     "https://suggestqueries.google.com/*",
     "https://api.bing.com/*",
